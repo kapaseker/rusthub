@@ -28,6 +28,10 @@ impl ISummary for Tweet {
     }
 }
 
+fn printSummarize(item:&impl ISummary) {
+    println!("{}", item.summarize())
+}
+
 fn main() {
     let article = Article {
         title: String::from("I love apple"),
@@ -44,5 +48,7 @@ fn main() {
     };
 
     println!("{}", article.summarize());
-    println!("{}", tweet.summarize())
+    println!("{}", tweet.summarize());
+
+    printSummarize(&tweet)
 }
