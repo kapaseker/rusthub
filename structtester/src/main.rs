@@ -19,11 +19,25 @@ impl Rectangle {
         return (self.width + self.height) * 2.0;
     }
 
-    fn square(sideLen: f32) -> Self {
+    fn square(side_len: f32) -> Self {
         return Self {
-            width: sideLen,
-            height: sideLen,
+            width: side_len,
+            height: side_len,
         };
+    }
+}
+
+enum IpAddress {
+    V4(u8, u8, u8, u8),
+    V6(String),
+}
+
+impl IpAddress {
+    fn print(&self) {
+        match self {
+            IpAddress::V4(_, _, _, _) => { println!("this is ip v4.") }
+            IpAddress::V6(x) => { println!("this is ip v6: {}.", x) }
+        }
     }
 }
 
@@ -51,4 +65,7 @@ fn main() {
     let square = Rectangle::square(2.6);
     println!("{}", square.area());
     println!("{}", square.perimeter());
+
+    let ip_v6 = IpAddress::V6(String::from("::3"));
+    ip_v6.print();
 }
