@@ -3,19 +3,11 @@ use std::error::Error;
 use std::fs;
 
 pub fn search<'a>(ignoreCase: bool, query: &str, contents: &'a str) -> Vec<&'a str> {
-    let mut searched = vec![];
-    for line in contents.lines() {
-        if ignoreCase {
-            if line.to_lowercase().contains(&query.to_lowercase()) {
-                searched.push(line);
-            }
-        } else {
-            if line.contains(query) {
-                searched.push(line);
-            }
-        }
-    }
-    return searched;
+    return if ignoreCase {
+        contents.lines().filter(|x| x.to_lowercase().contains(&query.to_lowercase())).collect()
+    } else {
+        contents.lines().filter(|x| x.contains(query)).collect()
+    };
 }
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
@@ -40,33 +32,25 @@ impl PartialEq for Config {
 }
 
 impl Config {
-    pub fn build(str: &[String]) -> Result<Config, &'static str> {
-        if str.len() < 3 {
-            return Err("arguments size is too short");
-        }
+    pub fn build(mut argIter: impl Iterator<Item=String>) -> Result<Config, &'static str> {
+        argIter.next();
 
         let mut query: Option<String> = None;
         let mut path: Option<String> = None;
         let mut ignore: bool = false;
 
-        let mut index = 0;
-
-        for x in str {
-            if index > 0 {
-                if x.starts_with('-') {
-                    if x == "-i" {
-                        ignore = true
-                    }
-                } else {
-                    if query == None {
-                        query = Some(x.clone())
-                    } else if path == None {
-                        path = Some(x.clone())
-                    }
+        for x in argIter {
+            if x.starts_with('-') {
+                if x == "-i" {
+                    ignore = true
+                }
+            } else {
+                if query == None {
+                    query = Some(x)
+                } else if path == None {
+                    path = Some(x)
                 }
             }
-
-            index += 1;
         }
 
         return Ok(Config {
@@ -75,6 +59,42 @@ impl Config {
             ignore,
         });
     }
+
+    // pub fn build(str: &[String]) -> Result<Config, &'static str> {
+    //     if str.len() < 3 {
+    //         return Err("arguments size is too short");
+    //     }
+    //
+    //     let mut query: Option<String> = None;
+    //     let mut path: Option<String> = None;
+    //     let mut ignore: bool = false;
+    //
+    //     let mut index = 0;
+    //
+    //     for x in str {
+    //         if index > 0 {
+    //             if x.starts_with('-') {
+    //                 if x == "-i" {
+    //                     ignore = true
+    //                 }
+    //             } else {
+    //                 if query == None {
+    //                     query = Some(x.clone())
+    //                 } else if path == None {
+    //                     path = Some(x.clone())
+    //                 }
+    //             }
+    //         }
+    //
+    //         index += 1;
+    //     }
+    //
+    //     return Ok(Config {
+    //         query: query.unwrap(),
+    //         path: path.unwrap(),
+    //         ignore,
+    //     });
+    // }
 }
 
 #[cfg(test)]

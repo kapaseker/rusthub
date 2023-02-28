@@ -5,9 +5,8 @@ use minigre::Config;
 use minigre::run;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
 
-    let config = Config::build(&args).expect("problem with arguments");
+    let config = Config::build(env::args()).expect("problem with arguments");
 
     if let Err(e) = run(config) {
         println!("Application error: {e}");
