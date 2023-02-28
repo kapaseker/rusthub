@@ -1,19 +1,16 @@
-use std::env;
-use std::fs;
+use std::{env, process};
+use std::error::Error;
+
+use minigre::Config;
+use minigre::run;
+
 fn main() {
-    let args:Vec<String> = env::args().collect();
+    let args: Vec<String> = env::args().collect();
 
-    if args.len() < 3 {
-        println!("give me arguments at least 2");
-        return;
+    let config = Config::build(&args).expect("problem with arguments");
+
+    if let Err(e) = run(config) {
+        println!("Application error: {e}");
+        process::exit(1);
     }
-
-    let query = &args[1];
-    let path = &args[2];
-
-    println!("search for {query} in file {path}");
-
-    let contents = fs::read_to_string(path).expect("Can't read current file");
-
-    println!("{contents}");
 }
