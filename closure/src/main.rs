@@ -1,8 +1,8 @@
+use rand::Rng;
 use std::collections::HashMap;
 use std::process::id;
 use strum::EnumCount;
 use strum_macros::{Display, EnumCount, FromRepr};
-use rand::Rng;
 
 #[derive(Eq, Hash, PartialEq, Clone, Copy, FromRepr, EnumCount, Display, Debug)]
 enum ShirtColor {
@@ -72,7 +72,9 @@ fn main() {
     let mut inventory = Inventory { shirts: vec![] };
 
     for x in 0..10 {
-        inventory.shirts.push(ShirtColor::from_repr(rng.gen_range(0..ShirtColor::COUNT)).unwrap_or(ShirtColor::Red))
+        inventory.shirts.push(
+            ShirtColor::from_repr(rng.gen_range(0..ShirtColor::COUNT)).unwrap_or(ShirtColor::Red),
+        )
     }
 
     dbg!("{}", &inventory.shirts);
