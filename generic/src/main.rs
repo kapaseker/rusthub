@@ -1,3 +1,6 @@
+use generic::vete::Vete;
+
+
 pub trait ISummary {
     fn summarize(&self) -> String;
 }
@@ -50,5 +53,7 @@ fn main() {
     println!("{}", article.summarize());
     println!("{}", tweet.summarize());
 
-    printSummarize(&tweet)
+    printSummarize(&tweet);
+
+    Vete {x:2.0,y:2.4};
 }
