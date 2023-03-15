@@ -2,4 +2,6 @@ pub fn add_to_waitlist() {
     println!("this is waitlist, please wait.");
 }
 
-fn seat_at_table() {}
+pub fn seat_at_table() {
+    println!("Ok You can go tabel.");
+}
