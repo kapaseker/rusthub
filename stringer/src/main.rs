@@ -48,4 +48,6 @@ fn main() {
         b => println!("num is {}", b),
     }
 
+    let testStr = String::from("我是一个中国人");
+    println!("{}",testStr.chars().nth(0).unwrap());
 }

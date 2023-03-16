@@ -1,3 +1,5 @@
+use std::{fmt::Display, io::SeekFrom};
+
 struct User {
     id: u64,
     name: String,
@@ -35,13 +37,37 @@ enum IpAddress {
 impl IpAddress {
     fn print(&self) {
         match self {
-            IpAddress::V4(_, _, _, _) => { println!("this is ip v4.") }
-            IpAddress::V6(x) => { println!("this is ip v6: {}.", x) }
+            IpAddress::V4(_, _, _, _) => {
+                println!("this is ip v4.")
+            }
+            IpAddress::V6(x) => {
+                println!("this is ip v6: {}.", x)
+            }
         }
     }
 }
 
+#[derive(Debug)]
+struct Power {
+    name: String,
+    age: i32,
+}
+
+impl Display for Power {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "My name is {}, i am {} years old.", self.name, self.age)
+    }
+}
+
 fn main() {
+    let power = Power {
+        name: String::from("Kaka"),
+        age: 34,
+    };
+
+    println!("{}", power);
+    println!("{:?}", power);
+
     let mut bob = User {
         id: 232,
         name: String::from("good"),
