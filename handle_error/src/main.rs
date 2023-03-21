@@ -1,6 +1,7 @@
 use std::env;
 use std::fs::File;
 
+mod custom_error;
 fn main() {
     let file_result = File::open("./open.txt");
 
@@ -12,8 +13,14 @@ fn main() {
     let home_dir = env::home_dir();
     if let Some(path) = home_dir {
         println!("{}", path.display());
-    }else {
+    } else {
         println!("Empty Home Directory");
     }
-    
+
+    custom_error::good();
+
+    match custom_error::produceMyError() {
+        Ok(_) => print!("OK"),
+        Err(er) => println!("{}", er),
+    };
 }
