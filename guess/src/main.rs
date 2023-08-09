@@ -3,9 +3,12 @@ use rand::Rng;
 use std::cmp::Ordering;
 
 fn main() {
-    println!("Guess a number, input your guess:");
+    let min = 1;
+    let max = 100;
 
-    let secret = rand::thread_rng().gen_range(1..=100);
+    println!("Guess a number in range [{},{}] , input your guess:", min, max);
+
+    let secret = rand::thread_rng().gen_range(min..=max);
 
     // println!("secret is : {secret}");
 
@@ -17,7 +20,7 @@ fn main() {
         // 会输入回车
         io::stdin().read_line(&mut guess).expect("Failed to read line");
 
-        let mut guess_number = 0;
+        let guess_number;
 
         match guess.trim().parse::<u32>() {
             Ok(num) => guess_number = num,
@@ -39,8 +42,11 @@ fn main() {
             Ordering::Greater => { println!("Too big.") }
         }
 
+        println!("try again:");
+
         try_time += 1;
     }
 
     println!("You've try {try_time} times");
+    println!("Game Done, Thanks !");
 }
