@@ -12,9 +12,21 @@ use std::{rc::Rc, sync::Arc, borrow::Borrow};
  */
 
 fn main() {
+    testMoveToBox();
     testRc();
     testCell();
     testRefCell();
+}
+
+fn testMoveToBox() {
+    let a = 100;
+    let b = "Foo bar".to_string();
+
+    let box_a = Box::new(a);// a implemented Copy trait
+    println!("{a}");
+
+    let box_b = Box::new(b);
+    println!("{box_b}"); // can't use b anymore ,moved to box_b
 }
 
 fn testRc() {
@@ -75,5 +87,4 @@ fn testRefCell() {
     apple.add();
 
     println!("{}", apple.core.borrow());
-
 }

@@ -2,8 +2,8 @@ use std::thread;
 use std::time::Duration;
 
 struct Cacher<T>
-where
-    T: Fn(u32) -> u32,
+    where
+        T: Fn(u32) -> u32,
 {
     calc_fun: T,
     key: Option<u32>,
@@ -11,8 +11,8 @@ where
 }
 
 impl<T> Cacher<T>
-where
-    T: Fn(u32) -> u32,
+    where
+        T: Fn(u32) -> u32,
 {
     fn new(cache_fun: T) -> Self {
         Self {
@@ -56,4 +56,10 @@ fn main() {
     println!("first:{}", cache.value(1));
     println!("second:{}", cache.value(1));
     println!("third:{}", cache.value(2));
+
+    let mut a = 32;
+    println!("a is : {}", a);
+    let mut add_a_fun = || a += 32;
+    add_a_fun();
+    println!("after call add_a_fun a is : {}",a);
 }
