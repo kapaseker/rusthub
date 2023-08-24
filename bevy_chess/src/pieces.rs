@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use crate::constant::COUNT_CHESS_BLOCK;
 
 fn spawn_pieces(
     commands: &mut Commands,

@@ -1,9 +1,9 @@
 use bevy::prelude::*;
 use bevy_mod_picking::*;
-use bevy_mod_picking::prelude::RaycastPickTarget;
+use bevy_mod_picking::prelude::{RaycastPickCamera, RaycastPickTarget};
+use crate::constant::COUNT_CHESS_BLOCK;
 
-static COUNT_CHESS_BLOCK: u8 = 8;
-
+#[derive(Default, Component)]
 pub struct Square {
     pub x: u8,
     pub y: u8,
@@ -15,9 +15,43 @@ impl Square {
     }
 }
 
-#[derive(Default)]
+#[derive(Default, Resource)]
 pub struct SelectedSquare {
     entity: Option<Entity>,
+}
+
+#[derive(Default, Resource)]
+struct SquareMaterials {
+    highlight_color: Handle<StandardMaterial>,
+    selected_color: Handle<StandardMaterial>,
+    black_color: Handle<StandardMaterial>,
+    white_color: Handle<StandardMaterial>,
+}
+
+fn color_squares(
+    selected_square: Res<SelectedSquare>,
+    materials: Res<SquareMaterials>,
+    mut query: Query<(Entity, &Square, &mut Handle<StandardMaterial>)>,
+    picking_camera_query: Query<&RaycastPickCamera>,
+) {
+    let top_entity = match picking_camera_query.iter().last() {
+        Some(pick_camera) => {
+            Some(pick_camera.clone())
+        }
+        None => { None }
+    };
+
+    for (entity, square, mut material) in query.iter_mut() {
+        *material = if Some(entity) == top_entity {
+            materials.highlight_color.clone()
+        } else if Some(entity) == selected_square.entity {
+            materials.selected_color.clone()
+        } else if square.is_white() {
+            materials.white_color.clone()
+        } else {
+            materials.black_color.clone()
+        }
+    }
 }
 
 pub fn create_board(
@@ -50,5 +84,15 @@ pub fn create_board(
                 }
             ));
         }
+    }
+}
+
+pub struct BoardPlugin;
+
+impl Plugin for BoardPlugin {
+    fn build(&self, app: &mut App) {
+        app.init_resource::<SelectedSquare>()
+            .add_systems(Startup, create_board)
+            .add_systems(Update, color_squares);
     }
 }

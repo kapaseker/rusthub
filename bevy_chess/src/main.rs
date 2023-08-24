@@ -1,9 +1,11 @@
 use bevy::prelude::*;
 use bevy_mod_picking::*;
 use bevy_mod_picking::prelude::RaycastPickCamera;
+use crate::board::BoardPlugin;
 
 mod pieces;
 mod board;
+mod constant;
 
 fn main() {
     App::new()
@@ -17,7 +19,8 @@ fn main() {
             ..default()
         }))
         .add_plugins(DefaultPickingPlugins)
-        .add_systems(Startup, (setup, board::create_board, pieces::create_pieces))
+        .add_plugins(BoardPlugin)
+        .add_systems(Startup, (setup, pieces::create_pieces))
         .run();
 }
 
