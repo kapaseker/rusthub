@@ -18,6 +18,17 @@ fn main() {
         let arr = vec![10, 2, 30, 4, 5];
         println!("max : {:?}", largest_one(&arr));
     }
+
+
+    let test_arr = [1,2,3,4,5];
+    match test_arr {
+        [1,remaining @ ..] => {
+            println!("{:?}",remaining);
+        }
+        _ => {
+
+        }
+    }
 }
 
 fn largest_one(arr: &[i32]) -> Option<&i32> {
