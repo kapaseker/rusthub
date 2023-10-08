@@ -51,15 +51,16 @@ fn main() {
 fn out_of_window_destroy(mut command: Commands, window: Query<&Window>,
                          planets: Query<(Entity, &Transform), With<Planet>>,
 ) {
-    let window = window.single();
-    let boundary_horizontal = window.resolution.width() / 2.0 - REGION_BOUNDARY;
-    let boundary_vertical = window.resolution.height() / 2.0 - REGION_BOUNDARY;
+    if let Ok(window) = window.get_single() {
+        let boundary_horizontal = window.resolution.width() / 2.0 - REGION_BOUNDARY;
+        let boundary_vertical = window.resolution.height() / 2.0 - REGION_BOUNDARY;
 
-    for (entity, transform) in &planets {
-        let out_boundary = transform.translation.x < -boundary_horizontal || transform.translation.x > boundary_horizontal || transform.translation.y < -boundary_vertical || transform.translation.y > boundary_vertical;
-        if out_boundary
-        {
-            command.entity(entity).despawn();
+        for (entity, transform) in &planets {
+            let out_boundary = transform.translation.x < -boundary_horizontal || transform.translation.x > boundary_horizontal || transform.translation.y < -boundary_vertical || transform.translation.y > boundary_vertical;
+            if out_boundary
+            {
+                command.entity(entity).despawn();
+            }
         }
     }
 }
