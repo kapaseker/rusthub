@@ -1,0 +1,18 @@
+[package]
+name = "bevy_farm"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bevy = { version = "0.11" ,features = ["dynamic_linking"] }
+rand = "0.8.5"
+bevy_screen_diags = "0.6.0"
+bevy_panorbit_camera = "0.8.0"
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3

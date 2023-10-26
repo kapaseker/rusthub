@@ -11,6 +11,8 @@ pub struct Player {
     pub speed: f32,
 }
 
+mod pig;
+
 const SPRITE_SIZE: f32 = 20.0f32;
 
 fn main() {
@@ -28,7 +30,7 @@ fn main() {
     )
         .add_systems(Startup, set_up)
         .add_systems(Update, bevy::window::close_on_esc)
-        .add_systems(Update, (move_character, spawn_pig))
+        .add_systems(Update, (move_character, spawn_pig, pig_lifetime))
         .insert_resource(Money(100.0))
         .run();
 }
@@ -57,44 +59,6 @@ fn set_up(mut command: Commands, asset_server: Res<AssetServer>) {
                        speed: 100.0
                    }
     ));
-}
-
-fn spawn_pig(
-    mut command: Commands,
-    asset_server: Res<AssetServer>,
-    input: Res<Input<KeyCode>>,
-    mut money: ResMut<Money>,
-    player: Query<&Transform, With<Player>>,
-) {
-    if !input.just_pressed(KeyCode::Space) {
-        return;
-    }
-
-    let player_transform = player.single();
-
-    if money.0 >= 10.0 {
-
-        money.0 -= 10.0;
-
-        info!("Spent $10 on a pig, remaining: {}", money.0);
-
-        let pig_texture = asset_server.load("images/monster/nose_red.png");
-        let mut pig_transform = *player_transform;
-        pig_transform.translation.z = -1.0;
-        command.spawn(
-            (
-                SpriteBundle {
-                    sprite: Sprite {
-                        custom_size: Some(Vec2 { x: SPRITE_SIZE, y: SPRITE_SIZE }),
-                        ..default()
-                    },
-                    texture: pig_texture,
-                    transform: pig_transform,
-                    ..default()
-                }
-            )
-        );
-    }
 }
 
 fn move_character(
