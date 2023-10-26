@@ -1,0 +1,1 @@
+pub const SPRITE: f32 = 20.0f32;

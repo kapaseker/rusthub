@@ -1,7 +1,13 @@
 use std::default::Default;
+use bevy::input::common_conditions::input_toggle_active;
 
 use bevy::prelude::*;
 use bevy::render::camera::ScalingMode;
+use bevy_inspector_egui::quick::WorldInspectorPlugin;
+use crate::pig::PigPlugin;
+
+use crate::res::sprite::PLANET;
+use crate::res::size::SPRITE;
 
 #[derive(Resource)]
 pub struct Money(pub f32);
@@ -12,8 +18,7 @@ pub struct Player {
 }
 
 mod pig;
-
-const SPRITE_SIZE: f32 = 20.0f32;
+pub mod res;
 
 fn main() {
     App::new().add_plugins(DefaultPlugins
@@ -29,8 +34,9 @@ fn main() {
         })
     )
         .add_systems(Startup, set_up)
-        .add_systems(Update, bevy::window::close_on_esc)
-        .add_systems(Update, (move_character, spawn_pig, pig_lifetime))
+        .add_systems(Update, (bevy::window::close_on_esc, move_character))
+        .add_plugins(PigPlugin)
+        .add_plugins(WorldInspectorPlugin::default().run_if(input_toggle_active(true, KeyCode::M)))
         .insert_resource(Money(100.0))
         .run();
 }
@@ -45,11 +51,11 @@ fn set_up(mut command: Commands, asset_server: Res<AssetServer>) {
 
     command.spawn(camera);
 
-    let texture = asset_server.load("images/Planets/Black_hole.png");
+    let texture = asset_server.load(PLANET);
 
     command.spawn((SpriteBundle {
         sprite: Sprite {
-            custom_size: Some(Vec2 { x: SPRITE_SIZE, y: SPRITE_SIZE }),
+            custom_size: Some(Vec2 { x: SPRITE, y: SPRITE }),
             ..default()
         },
         texture,

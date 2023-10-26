@@ -1,8 +1,20 @@
 use bevy::prelude::*;
+use crate::{Money, Player};
+use crate::res::size::SPRITE;
+use crate::res::sprite::MONSTER;
+
 
 #[derive(Component)]
 pub struct Pig {
     pub life_timer: Timer,
+}
+
+pub struct PigPlugin;
+
+impl Plugin for PigPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(Update, (spawn_pig, pig_lifetime));
+    }
 }
 
 fn spawn_pig(
@@ -23,14 +35,14 @@ fn spawn_pig(
 
         info!("Spent $10 on a pig, remaining: {}", money.0);
 
-        let pig_texture = asset_server.load("images/monster/nose_red.png");
+        let pig_texture = asset_server.load(MONSTER);
         let mut pig_transform = *player_transform;
         pig_transform.translation.z = -1.0;
         command.spawn(
             (
                 SpriteBundle {
                     sprite: Sprite {
-                        custom_size: Some(Vec2 { x: SPRITE_SIZE, y: SPRITE_SIZE }),
+                        custom_size: Some(Vec2 { x: SPRITE, y: SPRITE }),
                         ..default()
                     },
                     texture: pig_texture,
