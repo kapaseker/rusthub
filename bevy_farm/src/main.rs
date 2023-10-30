@@ -3,22 +3,30 @@ use bevy::input::common_conditions::input_toggle_active;
 
 use bevy::prelude::*;
 use bevy::render::camera::ScalingMode;
+use bevy_inspector_egui::InspectorOptions;
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
+use bevy_inspector_egui::prelude::ReflectInspectorOptions;
 use crate::pig::PigPlugin;
 
 use crate::res::sprite::PLANET;
 use crate::res::size::SPRITE;
+use crate::ui::GameUI;
+
+mod ui;
+mod pig;
+mod res;
 
 #[derive(Resource)]
 pub struct Money(pub f32);
 
-#[derive(Component)]
+#[derive(Component, InspectorOptions, Default, Reflect)]
+#[reflect(Component, InspectorOptions)]
 pub struct Player {
+    #[inspector(min = 0.0)]
     pub speed: f32,
 }
 
-mod pig;
-pub mod res;
+
 
 fn main() {
     App::new().add_plugins(DefaultPlugins
@@ -33,9 +41,10 @@ fn main() {
             ..default()
         })
     )
+        .register_type::<Player>()
         .add_systems(Startup, set_up)
         .add_systems(Update, (bevy::window::close_on_esc, move_character))
-        .add_plugins(PigPlugin)
+        .add_plugins((PigPlugin, GameUI))
         .add_plugins(WorldInspectorPlugin::default().run_if(input_toggle_active(true, KeyCode::M)))
         .insert_resource(Money(100.0))
         .run();
@@ -63,7 +72,8 @@ fn set_up(mut command: Commands, asset_server: Res<AssetServer>) {
     },
                    Player {
                        speed: 100.0
-                   }
+                   },
+                   Name::new("Player"),
     ));
 }
 

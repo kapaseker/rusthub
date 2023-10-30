@@ -1,0 +1,1 @@
+pub const PIG_LIFE_SECOND: f32 = 2.0f32;
