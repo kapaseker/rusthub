@@ -2,6 +2,7 @@
 #![windows_subsystem = "windows"]
 
 use std::f32::consts::PI;
+
 use bevy::input::mouse::MouseMotion;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
@@ -48,6 +49,8 @@ fn mouse_move(
     }
 }
 
+const NUM_WORD_DISTANCE: f32 = 220f32;
+
 fn main() {
     App::new().add_plugins(DefaultPlugins.set(WindowPlugin {
         primary_window: Some(Window {
@@ -75,38 +78,18 @@ fn set_up(mut commands: Commands, assets: Res<AssetServer>) {
         font_size: 48.0,
         color: Color::WHITE,
     };
+
     let text_alignment = TextAlignment::Center;
-    commands.spawn(
-        Text2dBundle {
-            text: Text::from_section("12", text_style.clone())
-                .with_alignment(text_alignment),
-            transform: Transform::from_translation(Vec3::Y * 220f32),
-            ..default()
-        });
 
-    commands.spawn(
-        Text2dBundle {
-            text: Text::from_section("3", text_style.clone())
-                .with_alignment(text_alignment),
-            transform: Transform::from_translation(Vec3::X * 220f32),
-            ..default()
-        });
-
-    commands.spawn(
-        Text2dBundle {
-            text: Text::from_section("6", text_style.clone())
-                .with_alignment(text_alignment),
-            transform: Transform::from_translation(-Vec3::Y * 220f32),
-            ..default()
-        });
-
-    commands.spawn(
-        Text2dBundle {
-            text: Text::from_section("9", text_style.clone())
-                .with_alignment(text_alignment),
-            transform: Transform::from_translation(-Vec3::X * 220f32),
-            ..default()
-        });
+    for i in 1..=12 {
+        let angle_vec = Vec2::from_angle((90f32 - i as f32 * 30f32).to_radians()) * NUM_WORD_DISTANCE;
+        commands.spawn(
+            Text2dBundle {
+                text: Text::from_section(format!("{}", i), text_style.clone()).with_alignment(text_alignment),
+                transform: Transform::from_translation(Vec3::new(angle_vec.x, angle_vec.y, 0.0)),
+                ..default()
+            });
+    }
 }
 
 /// 看下Gizmos的文档，Gizmos的绘制发生在每一帧，所以不能使用fixtime更新
@@ -115,6 +98,17 @@ fn draw_watch_dial(mut gizmo: Gizmos) {
     let hour = local.hour12();
     let minute = local.minute();
     let sec = local.second();
+    local.timestamp_millis();
+
+    for i in 0..60 {
+        let mut len = 250f32;
+        if i % 5 == 0 {
+            len = 240f32;
+        }
+        // gizmo.line_2d(Vec2::from_angle((i as f32 * 6.0).to_degrees()) * 210f32, Vec2::from_angle((i as f32).to_degrees()) * 260f32, Color::BLUE);
+        gizmo.line_2d(Vec2::from_angle((i as f32 * 6.0).to_radians()) * len,
+                      Vec2::from_angle((i as f32 * 6.0).to_radians()) * 260f32, Color::BLUE);
+    }
 
     // out circle
     gizmo.circle_2d(Vec2::ZERO, 260.0, Color::BLUE).segments(360);
