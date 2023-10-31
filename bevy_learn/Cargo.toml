@@ -10,6 +10,7 @@ bevy = { version = "0.11" ,features = ["dynamic_linking"] }
 rand = "0.8.5"
 bevy_screen_diags = "0.6.0"
 bevy_panorbit_camera = "0.8.0"
+chrono = "0.4"
 
 [profile.dev]
 opt-level = 1
