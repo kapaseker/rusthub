@@ -1,3 +1,6 @@
+// hide console window
+#![windows_subsystem = "windows"]
+
 use std::f32::consts::PI;
 use bevy::input::mouse::MouseMotion;
 use bevy::prelude::*;
@@ -36,11 +39,11 @@ fn mouse_move(
     if window_move.movable {
         let mut window = window.single_mut();
         if let WindowPosition::At(window_position) = window.position {
-            let mut sumDelta = Vec2::ZERO;
+            let mut sum_delta = Vec2::ZERO;
             for motion in mouse_motion.iter() {
-                sumDelta += motion.delta;
+                sum_delta += motion.delta;
             }
-            window.position = WindowPosition::At(IVec2::new(window_position.x + sumDelta.x as i32, window_position.y + sumDelta.y as i32))
+            window.position = WindowPosition::At(IVec2::new(window_position.x + sum_delta.x as i32, window_position.y + sum_delta.y as i32))
         }
     }
 }
@@ -73,39 +76,40 @@ fn set_up(mut commands: Commands, assets: Res<AssetServer>) {
         color: Color::WHITE,
     };
     let text_alignment = TextAlignment::Center;
-    commands.spawn((
+    commands.spawn(
         Text2dBundle {
             text: Text::from_section("12", text_style.clone())
                 .with_alignment(text_alignment),
-            transform: Transform::from_translation(Vec3::Y * 220.0),
+            transform: Transform::from_translation(Vec3::Y * 220f32),
             ..default()
-        }));
+        });
 
-    commands.spawn((
+    commands.spawn(
         Text2dBundle {
             text: Text::from_section("3", text_style.clone())
                 .with_alignment(text_alignment),
-            transform: Transform::from_translation(Vec3::X * 220.0),
+            transform: Transform::from_translation(Vec3::X * 220f32),
             ..default()
-        }));
+        });
 
-    commands.spawn((
+    commands.spawn(
         Text2dBundle {
             text: Text::from_section("6", text_style.clone())
                 .with_alignment(text_alignment),
-            transform: Transform::from_translation(-Vec3::Y * 220.0),
+            transform: Transform::from_translation(-Vec3::Y * 220f32),
             ..default()
-        }));
+        });
 
-    commands.spawn((
+    commands.spawn(
         Text2dBundle {
             text: Text::from_section("9", text_style.clone())
                 .with_alignment(text_alignment),
-            transform: Transform::from_translation(-Vec3::X * 220.0),
+            transform: Transform::from_translation(-Vec3::X * 220f32),
             ..default()
-        }));
+        });
 }
 
+/// 看下Gizmos的文档，Gizmos的绘制发生在每一帧，所以不能使用fixtime更新
 fn draw_watch_dial(mut gizmo: Gizmos) {
     let local: DateTime<chrono::offset::Local> = chrono::offset::Local::now();
     let hour = local.hour12();
@@ -116,7 +120,7 @@ fn draw_watch_dial(mut gizmo: Gizmos) {
     gizmo.circle_2d(Vec2::ZERO, 260.0, Color::BLUE).segments(360);
 
     // second hand
-    gizmo.line_2d(Vec2::ZERO, Vec2::from_angle(second_to_angle(sec)) * 200.0, Color::RED);
+    gizmo.line_2d(Vec2::ZERO, Vec2::from_angle(second_to_angle(sec)) * 220.0, Color::RED);
 
     // minute hand
     gizmo.line_2d(Vec2::ZERO, Vec2::from_angle(minute_to_angle(minute, sec)) * 160.0, Color::GREEN);
