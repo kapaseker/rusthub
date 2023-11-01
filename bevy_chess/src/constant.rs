@@ -1,1 +1,0 @@
-pub static COUNT_CHESS_BLOCK: u8 = 8;
