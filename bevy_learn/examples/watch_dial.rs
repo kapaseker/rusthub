@@ -7,6 +7,7 @@ use bevy::input::mouse::MouseMotion;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 use chrono::prelude::*;
+use bevy_egui::{egui, EguiContexts, EguiPlugin};
 
 struct MouseDragPlugin;
 
@@ -15,13 +16,16 @@ struct CanMoveWindow {
     movable: bool,
 }
 
+#[derive(Resource)]
+struct JumpSecond(bool);
+
 impl Plugin for MouseDragPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, mouse_move);
+        app.add_systems(Update, mouse_drag_move_window);
     }
 }
 
-fn mouse_move(
+fn mouse_drag_move_window(
     mouse: Res<Input<MouseButton>>,
     mut window_move: bevy::prelude::Local<CanMoveWindow>,
     mut mouse_motion: EventReader<MouseMotion>,
@@ -44,12 +48,18 @@ fn mouse_move(
             for motion in mouse_motion.iter() {
                 sum_delta += motion.delta;
             }
+            mouse_motion.clear();
             window.position = WindowPosition::At(IVec2::new(window_position.x + sum_delta.x as i32, window_position.y + sum_delta.y as i32))
         }
     }
 }
 
 const NUM_WORD_DISTANCE: f32 = 220f32;
+
+const SHORT_HAND: f32 = 20f32;
+const SECOND_HAND_LEN: f32 = 220f32;
+const MINUTE_HAND_LEN: f32 = 160f32;
+const HOUR_HAND_LEN: f32 = 120f32;
 
 fn main() {
     App::new().add_plugins(DefaultPlugins.set(WindowPlugin {
@@ -62,11 +72,13 @@ fn main() {
         }),
         ..default()
     }))
+        .insert_resource(JumpSecond(true))
         .insert_resource(ClearColor(Color::NONE))
         .add_systems(Startup, set_up)
         .add_systems(Update, bevy::window::close_on_esc)
-        .add_systems(Update, draw_watch_dial)
+        .add_systems(Update, (draw_watch_dial, draw_watch_hand, ui_control_panel))
         .add_plugins(MouseDragPlugin)
+        .add_plugins(EguiPlugin)
         .run();
 }
 
@@ -92,14 +104,38 @@ fn set_up(mut commands: Commands, assets: Res<AssetServer>) {
     }
 }
 
-/// 看下Gizmos的文档，Gizmos的绘制发生在每一帧，所以不能使用fixtime更新
-fn draw_watch_dial(mut gizmo: Gizmos) {
+fn draw_watch_hand(mut gizmo: Gizmos, mut jump: ResMut<JumpSecond>) {
     let local: DateTime<chrono::offset::Local> = chrono::offset::Local::now();
     let hour = local.hour12();
     let minute = local.minute();
-    let sec = local.second();
-    local.timestamp_millis();
 
+    // out circle
+    gizmo.circle_2d(Vec2::ZERO, 260.0, Color::BLUE).segments(360);
+
+    let mut sec = local.second() as f32;
+    if !jump.0 {
+        sec += local.nanosecond() as f32 / 1000000000f32
+    }
+    let second_hand = Vec2::from_angle(second_to_angle(sec));
+    gizmo.line_2d(-second_hand * SHORT_HAND, second_hand * SECOND_HAND_LEN, Color::RED);
+
+    // minute hand
+    let minute_hand = Vec2::from_angle(minute_to_angle(minute, sec as u32));
+    gizmo.line_2d(-minute_hand * SHORT_HAND, minute_hand * MINUTE_HAND_LEN, Color::GREEN);
+
+    // hour hand
+    let hour_hand = Vec2::from_angle(hour_to_angle(hour.1, minute));
+    gizmo.line_2d(-hour_hand * SHORT_HAND, hour_hand * HOUR_HAND_LEN, Color::YELLOW);
+}
+
+fn ui_control_panel(mut contexts: EguiContexts, mut jump: ResMut<JumpSecond>) {
+    egui::Window::new("").movable(false).resizable(false).title_bar(false).show(contexts.ctx_mut(), |ui| {
+        ui.checkbox(&mut (jump.0), "jump second");
+    });
+}
+
+/// 看下Gizmos的文档，Gizmos的绘制发生在每一帧，所以不能使用fixtime更新
+fn draw_watch_dial(mut gizmo: Gizmos) {
     for i in 0..60 {
         let mut len = 250f32;
         if i % 5 == 0 {
@@ -112,19 +148,10 @@ fn draw_watch_dial(mut gizmo: Gizmos) {
 
     // out circle
     gizmo.circle_2d(Vec2::ZERO, 260.0, Color::BLUE).segments(360);
-
-    // second hand
-    gizmo.line_2d(Vec2::ZERO, Vec2::from_angle(second_to_angle(sec)) * 220.0, Color::RED);
-
-    // minute hand
-    gizmo.line_2d(Vec2::ZERO, Vec2::from_angle(minute_to_angle(minute, sec)) * 160.0, Color::GREEN);
-
-    // hour hand
-    gizmo.line_2d(Vec2::ZERO, Vec2::from_angle(hour_to_angle(hour.1, minute)) * 120.0, Color::YELLOW);
 }
 
-fn second_to_angle(second: u32) -> f32 {
-    return second as f32 / 60.0 * 2.0 * (-PI) + (PI / 2.0);
+fn second_to_angle(second: f32) -> f32 {
+    return second / 60.0 * 2.0 * (-PI) + (PI / 2.0);
 }
 
 fn minute_to_angle(minute: u32, second: u32) -> f32 {
