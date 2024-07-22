@@ -8,6 +8,7 @@ mod reverse_string;
 mod beer_song;
 mod util;
 mod nth_prime;
+mod difference_of_squares;
 
 ///
 ///
