@@ -9,6 +9,7 @@ mod beer_song;
 mod util;
 mod nth_prime;
 mod difference_of_squares;
+mod high_scores;
 
 ///
 ///
