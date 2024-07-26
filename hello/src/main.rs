@@ -1,7 +1,7 @@
 use crate::gigasecond::after;
 use crate::misc::find_next_square;
 use crate::reverse_string::reverse;
-use crate::util::is_prime;
+use crate::util::{count_primes, is_prime, prime_sequence};
 
 mod block;
 mod gigasecond;
@@ -13,6 +13,7 @@ mod difference_of_squares;
 mod high_scores;
 mod misc;
 mod anagram;
+mod prime_factors;
 
 ///
 ///
@@ -20,14 +21,16 @@ mod anagram;
 ///
 fn main() {
 
-    println!("{}", 123u32.count_ones() as usize);
+    // println!("{}", 123u32.count_ones() as usize);
 
-    println!("{:?}", find_next_square(144u64));
+    println!("{:?}", count_primes(999900));
 
-    println!("{}",'Γ'.to_ascii_lowercase() == 'Γ');
-
-    let s = "Δ-Straẞe-İΒΓΑ,BA";
-    println!("{}", s.chars().flat_map(|c| c.to_lowercase()).collect::<String>());
+    // println!("{:?}", find_next_square(144u64));
+    //
+    // println!("{}",'Γ'.to_ascii_lowercase() == 'Γ');
+    //
+    // let s = "Δ-Straẞe-İΒΓΑ,BA";
+    // println!("{}", s.chars().flat_map(|c| c.to_lowercase()).collect::<String>());
 
     // use time_macros::{date, datetime, time};
     //

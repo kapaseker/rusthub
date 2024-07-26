@@ -11,3 +11,36 @@ pub fn is_prime(n: u32) -> bool {
 
     return true;
 }
+
+pub fn prime_sequence(n: u32) -> Vec<u32> {
+
+    let mut primes = vec![];
+
+    if n == 0 { return primes }
+
+    let mut primes_check: Vec<bool> = vec![true; n as usize];
+    let mut i = 2;
+    while i < n {
+        let iu = i as usize;
+        if primes_check[iu] {
+            primes.push(i);
+            let iuu = i as u64;
+            if iuu * iuu < n as u64 {
+                for j in (i * i..n).step_by(iu) {
+                    primes_check[j as usize] = false
+                }
+            }
+        }
+        i += 1;
+    }
+
+    primes
+}
+
+
+///
+/// [计数质数](https://leetcode.cn/problems/count-primes/description/)
+///
+pub fn count_primes(n: i32) -> i32 {
+    prime_sequence(n as u32).len() as i32
+}
