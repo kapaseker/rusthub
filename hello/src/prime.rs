@@ -1,3 +1,5 @@
+
+///检查一个数，是否是质数
 pub fn is_prime(n: u32) -> bool {
     if n <= 1 { return false; }
     if n == 2 || n == 3 { return true; }
@@ -12,6 +14,7 @@ pub fn is_prime(n: u32) -> bool {
     return true;
 }
 
+///生成质数的数列
 pub fn prime_sequence(n: u32) -> Vec<u32> {
 
     let mut primes = vec![];

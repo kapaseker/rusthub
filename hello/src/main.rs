@@ -1,19 +1,20 @@
 use crate::gigasecond::after;
 use crate::misc::find_next_square;
 use crate::reverse_string::reverse;
-use crate::util::{count_primes, is_prime, prime_sequence};
+use crate::prime::{count_primes, is_prime, prime_sequence};
 
 mod block;
 mod gigasecond;
 mod reverse_string;
 mod beer_song;
-mod util;
+mod prime;
 mod nth_prime;
 mod difference_of_squares;
 mod high_scores;
 mod misc;
 mod anagram;
 mod prime_factors;
+mod reverse_vowels_of_a_string;
 
 ///
 ///

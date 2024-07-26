@@ -1,4 +1,4 @@
-use crate::util::is_prime;
+use crate::prime::is_prime;
 
 pub fn nth(n: u32) -> u32 {
     let mut m = 2;
