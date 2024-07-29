@@ -1,3 +1,4 @@
+use crate::break_camel_case::solution;
 use crate::convert_string_to_camel_case::to_camel_case;
 use crate::fibonacci_streaming::all_fibonacci_numbers;
 use crate::gigasecond::after;
@@ -21,23 +22,30 @@ mod replace_with_alphabet_position;
 mod convert_string_to_camel_case;
 mod twice_linear;
 mod fibonacci_streaming;
+mod break_camel_case;
+mod perimeter_of_squares_in_a_rectangle;
+mod count_ip_addresses;
+mod unique_in_order;
+mod bob_robot;
+mod check_sublist;
 
 ///
 ///
 /// the main function
 ///
 fn main() {
-    let mut fib_iterator = all_fibonacci_numbers();
-    for _ in 0..10 {
-        print!("{:?}", fib_iterator.next());
-    }
-    println!();
+    // let mut fib_iterator = all_fibonacci_numbers();
+    // for _ in 0..10 {
+    //     print!("{:?}", fib_iterator.next());
+    // }
+    // println!();
     // println!("{}", 123u32.count_ones() as usize);
     // println!("{}",to_camel_case("a_b_c"));
     // println!("{}",to_camel_case("the_stealth_warrior"));
-    // println!("{}",to_camel_case("The-Stealth-Warrior"));
+    println!("{}",to_camel_case("The-Stealth-Warrior"));
+    println!("{}",solution(&to_camel_case("The-Stealth-Warrior")));
     // println!("{}",to_camel_case("A-B-C"));
-    println!("{}",create_phone_number(&[1, 2, 3, 4, 5, 6, 7, 8, 9, 0]));
+    // println!("{}",create_phone_number(&[1, 2, 3, 4, 5, 6, 7, 8, 9, 0]));
     // println!("{}",'a' as u8);
     // println!("{}",'z' as u8);
     // println!("{}",'A' as u8);
