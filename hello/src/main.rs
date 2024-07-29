@@ -1,3 +1,4 @@
+use crate::convert_string_to_camel_case::to_camel_case;
 use crate::gigasecond::after;
 use crate::misc::find_next_square;
 use crate::reverse_string::reverse;
@@ -15,6 +16,8 @@ mod misc;
 mod anagram;
 mod prime_factors;
 mod reverse_vowels_of_a_string;
+mod replace_with_alphabet_position;
+mod convert_string_to_camel_case;
 
 ///
 ///
@@ -23,8 +26,15 @@ mod reverse_vowels_of_a_string;
 fn main() {
 
     // println!("{}", 123u32.count_ones() as usize);
-
-    println!("{:?}", count_primes(999900));
+    println!("{}",to_camel_case("a_b_c"));
+    println!("{}",to_camel_case("the_stealth_warrior"));
+    println!("{}",to_camel_case("The-Stealth-Warrior"));
+    println!("{}",to_camel_case("A-B-C"));
+    // println!("{}",'a' as u8);
+    // println!("{}",'z' as u8);
+    // println!("{}",'A' as u8);
+    // println!("{}",'Z' as u8);
+    // println!("{:?}", count_primes(999900));
 
     // println!("{:?}", find_next_square(144u64));
     //
