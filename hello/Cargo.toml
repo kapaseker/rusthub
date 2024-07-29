@@ -9,6 +9,7 @@ edition = "2021"
 time = "0.3"
 time-macros = "0.2"
 unicode-segmentation = "1.11"
-regex = "1.10.5"
+regex = "1.10"
+num = "0.4"
 
 [features]

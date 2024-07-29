@@ -1,6 +1,7 @@
 use crate::convert_string_to_camel_case::to_camel_case;
+use crate::fibonacci_streaming::all_fibonacci_numbers;
 use crate::gigasecond::after;
-use crate::misc::find_next_square;
+use crate::misc::{create_phone_number, find_next_square};
 use crate::reverse_string::reverse;
 use crate::prime::{count_primes, is_prime, prime_sequence};
 
@@ -18,18 +19,25 @@ mod prime_factors;
 mod reverse_vowels_of_a_string;
 mod replace_with_alphabet_position;
 mod convert_string_to_camel_case;
+mod twice_linear;
+mod fibonacci_streaming;
 
 ///
 ///
 /// the main function
 ///
 fn main() {
-
+    let mut fib_iterator = all_fibonacci_numbers();
+    for _ in 0..10 {
+        print!("{:?}", fib_iterator.next());
+    }
+    println!();
     // println!("{}", 123u32.count_ones() as usize);
-    println!("{}",to_camel_case("a_b_c"));
-    println!("{}",to_camel_case("the_stealth_warrior"));
-    println!("{}",to_camel_case("The-Stealth-Warrior"));
-    println!("{}",to_camel_case("A-B-C"));
+    // println!("{}",to_camel_case("a_b_c"));
+    // println!("{}",to_camel_case("the_stealth_warrior"));
+    // println!("{}",to_camel_case("The-Stealth-Warrior"));
+    // println!("{}",to_camel_case("A-B-C"));
+    println!("{}",create_phone_number(&[1, 2, 3, 4, 5, 6, 7, 8, 9, 0]));
     // println!("{}",'a' as u8);
     // println!("{}",'z' as u8);
     // println!("{}",'A' as u8);
