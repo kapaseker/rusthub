@@ -28,6 +28,8 @@ mod count_ip_addresses;
 mod unique_in_order;
 mod bob_robot;
 mod check_sublist;
+mod word_count;
+mod convert_matrix;
 
 ///
 ///
