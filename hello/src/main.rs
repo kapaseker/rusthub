@@ -41,6 +41,7 @@ mod equal_sides_of_an_array;
 mod duplicate_encoder;
 mod not_very_secure;
 mod number_of_trailing_zeros_of_n;
+mod pete_the_baker;
 
 ///
 ///
