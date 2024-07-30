@@ -33,6 +33,8 @@ mod convert_matrix;
 mod color_choice;
 mod multiples_of_3_or_5;
 mod split_strings;
+mod parse_bank_account_number;
+mod snail;
 
 ///
 ///
