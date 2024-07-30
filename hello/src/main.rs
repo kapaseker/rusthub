@@ -35,6 +35,12 @@ mod multiples_of_3_or_5;
 mod split_strings;
 mod parse_bank_account_number;
 mod snail;
+mod ip_validation;
+mod find_the_odd_int;
+mod equal_sides_of_an_array;
+mod duplicate_encoder;
+mod not_very_secure;
+mod number_of_trailing_zeros_of_n;
 
 ///
 ///
