@@ -35,7 +35,7 @@ impl Matrix {
 
     pub fn column(&self, col_no: usize) -> Option<Vec<u32>> {
         if col_no <= self.cols {
-            let start = (col_no - 1);
+            let start = col_no - 1;
             let end = self.nums.len();
             Some(self.nums[start..end].to_vec().into_iter().step_by(self.cols).collect::<Vec<u32>>())
         } else {

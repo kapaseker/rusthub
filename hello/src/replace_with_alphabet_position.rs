@@ -7,7 +7,7 @@ fn alphabet_position(text: &str) -> String {
             nums_vec.push(format!("{}", code - 96));
         }
 
-        if (code >= 65 && code <= 90) {
+        if code >= 65 && code <= 90 {
             nums_vec.push(format!("{}", code - 64));
         }
     }

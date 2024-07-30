@@ -30,6 +30,9 @@ mod bob_robot;
 mod check_sublist;
 mod word_count;
 mod convert_matrix;
+mod color_choice;
+mod multiples_of_3_or_5;
+mod split_strings;
 
 ///
 ///
