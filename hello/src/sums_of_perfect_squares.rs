@@ -38,8 +38,6 @@ mod tests {
 
     #[test]
     fn sample_tests() {
-        let a :i32 = 45;
-        (a as f64).sqrt().trunc();
         assert_eq!(sum_of_squares(15), 4, "\nYour answer (left) is not the expected answer (right).");
         assert_eq!(sum_of_squares(16), 1, "\nYour answer (left) is not the expected answer (right).");
         assert_eq!(sum_of_squares(17), 2, "\nYour answer (left) is not the expected answer (right).");

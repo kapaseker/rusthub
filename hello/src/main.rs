@@ -4,7 +4,7 @@ use crate::fibonacci_streaming::all_fibonacci_numbers;
 use crate::gigasecond::after;
 use crate::misc::{create_phone_number, find_next_square};
 use crate::reverse_string::reverse;
-use crate::prime::{count_primes, is_prime, prime_sequence};
+use crate::prime::{count_primes, is_prime, prime_vector};
 
 mod block;
 mod gigasecond;
@@ -45,6 +45,7 @@ mod pete_the_baker;
 mod matrix_transpose;
 mod sums_of_perfect_squares;
 mod smallest_k_elements_of_list;
+mod the_sum_of_the_prime_factors_of_a_number;
 
 ///
 ///

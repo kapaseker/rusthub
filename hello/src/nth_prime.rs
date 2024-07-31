@@ -5,7 +5,7 @@ pub fn nth(n: u32) -> u32 {
     let mut i = 0;
 
     while i <= n {
-        if is_prime(m) {
+        if is_prime(m as u64) {
             i += 1;
         }
         m += 1;

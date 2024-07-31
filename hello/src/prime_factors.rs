@@ -1,14 +1,5 @@
-pub fn factors(n: u64) -> Vec<u64> {
-    todo!("This should calculate the prime factors of {n}")
-}
-
-fn firstPrimeFactor(n: u64) -> u64 {
-    todo!()
-}
-
-
 mod test {
-    use crate::prime_factors::factors;
+    use crate::prime::prime_factors as factors;
 
     #[test]
     fn no_factors() {
@@ -23,7 +14,6 @@ mod test {
 
 
     #[test]
-    #[ignore]
     fn prime_number() {
         let factors = factors(2);
         let expected = [2];
@@ -32,7 +22,6 @@ mod test {
 
 
     #[test]
-    #[ignore]
     fn another_prime_number() {
         let factors = factors(3);
 
@@ -45,7 +34,6 @@ mod test {
 
 
     #[test]
-    #[ignore]
     fn square_of_a_prime() {
         let factors = factors(9);
 
@@ -58,7 +46,6 @@ mod test {
 
 
     #[test]
-    #[ignore]
     fn product_of_first_prime() {
         let factors = factors(4);
 
@@ -71,7 +58,6 @@ mod test {
 
 
     #[test]
-    #[ignore]
     fn cube_of_a_prime() {
         let factors = factors(8);
 
@@ -84,7 +70,6 @@ mod test {
 
 
     #[test]
-    #[ignore]
     fn product_of_second_prime() {
         let factors = factors(27);
 
@@ -97,7 +82,6 @@ mod test {
 
 
     #[test]
-    #[ignore]
     fn product_of_third_prime() {
         let factors = factors(625);
 
@@ -110,7 +94,6 @@ mod test {
 
 
     #[test]
-    #[ignore]
     fn product_of_first_and_second_prime() {
         let factors = factors(6);
 
@@ -123,7 +106,6 @@ mod test {
 
 
     #[test]
-    #[ignore]
     fn product_of_primes_and_non_primes() {
         let factors = factors(12);
 
@@ -136,7 +118,6 @@ mod test {
 
 
     #[test]
-    #[ignore]
     fn product_of_primes() {
         let factors = factors(901255);
 
@@ -149,7 +130,6 @@ mod test {
 
 
     #[test]
-    #[ignore]
     fn factors_include_a_large_prime() {
         let factors = factors(93819012551);
         let expected = [11, 9539, 894119];
