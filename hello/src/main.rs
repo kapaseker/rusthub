@@ -42,6 +42,9 @@ mod duplicate_encoder;
 mod not_very_secure;
 mod number_of_trailing_zeros_of_n;
 mod pete_the_baker;
+mod matrix_transpose;
+mod sums_of_perfect_squares;
+mod smallest_k_elements_of_list;
 
 ///
 ///
