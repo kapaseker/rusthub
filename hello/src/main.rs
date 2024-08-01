@@ -46,6 +46,7 @@ mod matrix_transpose;
 mod sums_of_perfect_squares;
 mod smallest_k_elements_of_list;
 mod the_sum_of_the_prime_factors_of_a_number;
+mod grain;
 
 ///
 ///
