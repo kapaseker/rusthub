@@ -2,6 +2,7 @@ use crate::break_camel_case::solution;
 use crate::convert_string_to_camel_case::to_camel_case;
 use crate::fibonacci_streaming::all_fibonacci_numbers;
 use crate::gigasecond::after;
+use crate::longest_substring_without_repeating_characters::length_of_longest_substring;
 use crate::misc::{create_phone_number, find_next_square};
 use crate::reverse_string::reverse;
 use crate::prime::{count_primes, is_prime, prime_vector};
@@ -48,6 +49,7 @@ mod smallest_k_elements_of_list;
 mod the_sum_of_the_prime_factors_of_a_number;
 mod grain;
 mod alphabet_war;
+mod longest_substring_without_repeating_characters;
 
 ///
 ///
@@ -62,6 +64,7 @@ fn main() {
     // println!("{}", 123u32.count_ones() as usize);
     // println!("{}",to_camel_case("a_b_c"));
     // println!("{}",to_camel_case("the_stealth_warrior"));
+    length_of_longest_substring("pwwkew".to_string());
     println!("{}",to_camel_case("The-Stealth-Warrior"));
     println!("{}",solution(&to_camel_case("The-Stealth-Warrior")));
     // println!("{}",to_camel_case("A-B-C"));
