@@ -4,6 +4,7 @@ use crate::fibonacci_streaming::all_fibonacci_numbers;
 use crate::gigasecond::after;
 use crate::longest_substring_without_repeating_characters::length_of_longest_substring;
 use crate::misc::{create_phone_number, find_next_square};
+use crate::move_zeroes::move_zeroes;
 use crate::reverse_string::reverse;
 use crate::prime::{count_primes, is_prime, prime_vector};
 
@@ -50,6 +51,10 @@ mod the_sum_of_the_prime_factors_of_a_number;
 mod grain;
 mod alphabet_war;
 mod longest_substring_without_repeating_characters;
+mod reverse_words_in_a_string_iii;
+mod find_minimum_in_rotated_sorted_array;
+mod move_zeroes;
+mod sort_colors;
 
 ///
 ///
@@ -64,9 +69,11 @@ fn main() {
     // println!("{}", 123u32.count_ones() as usize);
     // println!("{}",to_camel_case("a_b_c"));
     // println!("{}",to_camel_case("the_stealth_warrior"));
-    length_of_longest_substring("pwwkew".to_string());
-    println!("{}",to_camel_case("The-Stealth-Warrior"));
-    println!("{}",solution(&to_camel_case("The-Stealth-Warrior")));
+    let mut a = vec![0,1,0,3,12];
+    move_zeroes(&mut a);
+    // length_of_longest_substring("pwwkew".to_string());
+    // println!("{}",to_camel_case("The-Stealth-Warrior"));
+    // println!("{}",solution(&to_camel_case("The-Stealth-Warrior")));
     // println!("{}",to_camel_case("A-B-C"));
     // println!("{}",create_phone_number(&[1, 2, 3, 4, 5, 6, 7, 8, 9, 0]));
     // println!("{}",'a' as u8);
