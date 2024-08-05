@@ -57,6 +57,7 @@ mod move_zeroes;
 mod sort_colors;
 mod increasing_triplet_subsequence;
 mod string_compression;
+mod kindergarten_garden;
 
 ///
 ///
