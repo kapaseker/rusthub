@@ -55,6 +55,8 @@ mod reverse_words_in_a_string_iii;
 mod find_minimum_in_rotated_sorted_array;
 mod move_zeroes;
 mod sort_colors;
+mod increasing_triplet_subsequence;
+mod string_compression;
 
 ///
 ///
