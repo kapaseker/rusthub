@@ -58,6 +58,11 @@ mod sort_colors;
 mod increasing_triplet_subsequence;
 mod string_compression;
 mod kindergarten_garden;
+mod allergies;
+mod container_with_most_water;
+mod max_number_of_k_sum_pairs;
+mod maximum_average_subarray_i;
+mod maximum_number_of_vowels_in_a_substring_of_given_length;
 
 ///
 ///
