@@ -11,5 +11,7 @@ time-macros = "0.2"
 unicode-segmentation = "1.11"
 regex = "1.10"
 num = "0.4"
+rand = "0.8"
+threadpool = "1.8"
 
 [features]

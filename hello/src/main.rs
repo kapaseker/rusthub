@@ -63,6 +63,11 @@ mod container_with_most_water;
 mod max_number_of_k_sum_pairs;
 mod maximum_average_subarray_i;
 mod maximum_number_of_vowels_in_a_substring_of_given_length;
+mod robot_simulator;
+mod map_reduce;
+mod minesweeper;
+mod space_age;
+mod acronym;
 
 ///
 ///
