@@ -1,3 +1,4 @@
+use std::i32;
 use crate::break_camel_case::solution;
 use crate::convert_string_to_camel_case::to_camel_case;
 use crate::fibonacci_streaming::all_fibonacci_numbers;
@@ -68,12 +69,19 @@ mod map_reduce;
 mod minesweeper;
 mod space_age;
 mod acronym;
+mod isbn_verifier;
 
 ///
 ///
 /// the main function
 ///
 fn main() {
+    println!("{}", u8::MAX.saturating_add(2));
+    println!("{}", u8::MAX.wrapping_add(2));
+
+    println!("{}", i8::MAX.saturating_add(2));
+    println!("{}", i8::MAX.wrapping_add(2));
+
     // let mut fib_iterator = all_fibonacci_numbers();
     // for _ in 0..10 {
     //     print!("{:?}", fib_iterator.next());
@@ -82,8 +90,8 @@ fn main() {
     // println!("{}", 123u32.count_ones() as usize);
     // println!("{}",to_camel_case("a_b_c"));
     // println!("{}",to_camel_case("the_stealth_warrior"));
-    let mut a = vec![0,1,0,3,12];
-    move_zeroes(&mut a);
+    // let mut a = vec![0,1,0,3,12];
+    // move_zeroes(&mut a);
     // length_of_longest_substring("pwwkew".to_string());
     // println!("{}",to_camel_case("The-Stealth-Warrior"));
     // println!("{}",solution(&to_camel_case("The-Stealth-Warrior")));
