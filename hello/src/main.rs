@@ -70,6 +70,7 @@ mod minesweeper;
 mod space_age;
 mod acronym;
 mod isbn_verifier;
+mod knapsack;
 
 ///
 ///
