@@ -71,6 +71,7 @@ mod space_age;
 mod acronym;
 mod isbn_verifier;
 mod knapsack;
+mod luhn;
 
 ///
 ///
