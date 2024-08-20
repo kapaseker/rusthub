@@ -1,11 +1,11 @@
-use std::collections::LinkedList;
+use std::collections::VecDeque;
 use Error::{EmptyBuffer, FullBuffer};
 
 pub struct CircularBuffer<T> {
     // We fake using T here, so the compiler does not complain that
     // "parameter `T` is never used". Delete when no longer needed.
     capacity: usize,
-    items: LinkedList<T>,
+    items: VecDeque<T>,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -18,7 +18,7 @@ impl<T> CircularBuffer<T> {
     pub fn new(capacity: usize) -> Self {
         Self {
             capacity,
-            items: LinkedList::new(),
+            items: VecDeque::new(),
         }
     }
 
@@ -51,8 +51,8 @@ impl<T> CircularBuffer<T> {
 
 #[cfg(test)]
 mod test {
-    use std::rc::Rc;
     use crate::circular_buffer::{CircularBuffer, Error};
+    use std::rc::Rc;
 
     #[test]
 
