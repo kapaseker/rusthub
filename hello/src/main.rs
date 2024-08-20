@@ -72,6 +72,8 @@ mod acronym;
 mod isbn_verifier;
 mod knapsack;
 mod luhn;
+mod roman_numerals;
+mod circular_buffer;
 
 ///
 ///
