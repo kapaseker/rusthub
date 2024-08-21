@@ -74,6 +74,8 @@ mod knapsack;
 mod luhn;
 mod roman_numerals;
 mod circular_buffer;
+mod protein_translation;
+mod scrabble_score;
 
 ///
 ///
