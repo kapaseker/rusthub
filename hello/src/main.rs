@@ -76,6 +76,10 @@ mod roman_numerals;
 mod circular_buffer;
 mod protein_translation;
 mod scrabble_score;
+mod pangram;
+mod all_your_base;
+mod spiral_matrix;
+mod binary_search;
 
 ///
 ///
