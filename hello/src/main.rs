@@ -80,6 +80,7 @@ mod pangram;
 mod all_your_base;
 mod spiral_matrix;
 mod binary_search;
+mod hamming;
 
 ///
 ///
