@@ -81,6 +81,12 @@ mod all_your_base;
 mod spiral_matrix;
 mod binary_search;
 mod hamming;
+mod diffie_hellman;
+mod grade_school;
+mod isogram;
+mod etl;
+mod triangle;
+mod nucleotide_count;
 
 ///
 ///
