@@ -87,6 +87,12 @@ mod isogram;
 mod etl;
 mod triangle;
 mod nucleotide_count;
+mod rna_transcription;
+mod luhn_trait;
+mod custom_set;
+mod luhn_from;
+mod phone_number;
+mod accumulate;
 
 ///
 ///
