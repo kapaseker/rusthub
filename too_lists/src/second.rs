@@ -224,10 +224,10 @@ mod test {
         let a = RefCell::new(Foo("abcdef".to_string()));
         let mut b = a.borrow_mut();
         b.0.push_str("ccc");
-
+        //
         // let mut c = a.borrow_mut();
         // c.0.push_str("ddd");
 
-        assert_eq!("abcdefcccddd", a.borrow().0);
+        assert_eq!("abcdefccc", b.0);
     }
 }

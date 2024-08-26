@@ -104,6 +104,7 @@ impl<T> Drop for List<T> {
 
 #[cfg(test)]
 mod test {
+    use std::ops::Deref;
     use std::rc::Rc;
     use crate::third::List;
 
