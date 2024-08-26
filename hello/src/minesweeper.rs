@@ -1,5 +1,3 @@
-use num::traits::SaturatingSub;
-
 pub fn annotate(minefield: &[&str]) -> Vec<String> {
     if minefield.is_empty() { return vec![]; }
     let mut mines: Vec<Vec<char>> = minefield.iter().map(|s| (**s).chars().collect::<Vec<char>>()).collect();
@@ -22,7 +20,7 @@ pub fn annotate(minefield: &[&str]) -> Vec<String> {
                 });
 
                 if sum != 0 {
-                    mines[r][c] = char::from('0' as u8 + sum);
+                    mines[r][c] = char::from(b'0' + sum);
                 }
             }
         });
