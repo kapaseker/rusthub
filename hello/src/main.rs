@@ -93,6 +93,8 @@ mod custom_set;
 mod luhn_from;
 mod phone_number;
 mod accumulate;
+mod pascals_triangle;
+mod util;
 
 ///
 ///
