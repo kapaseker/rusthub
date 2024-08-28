@@ -104,6 +104,7 @@ impl<T> Drop for List<T> {
 
 #[cfg(test)]
 mod test {
+    use std::cell::RefCell;
     use std::ops::Deref;
     use std::rc::Rc;
     use crate::third::List;
@@ -142,5 +143,32 @@ mod test {
         }
 
         println!("{}", Rc::strong_count(&l));
+    }
+
+    #[test]
+    fn case_box() {
+        let mut a = Box::new(32);
+        *a += 90;
+        println!("{}", *a);
+    }
+
+    #[test]
+    fn case_rc_refcell_mut() {
+        let mut a = Rc::new(RefCell::new(32));
+        let mut b = a.borrow_mut();
+        *b = 32;
+        println!("{}", b.deref());
+    }
+
+    #[test]
+    fn case_rc_mut() {
+
+        #[derive(Clone)]
+        struct Foo(i32);
+        let mut a = Rc::new(Foo(32));
+        let b = Rc::make_mut(&mut a);
+        b.0 += 100;
+
+        println!("{}", a.0);
     }
 }
