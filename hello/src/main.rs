@@ -96,6 +96,7 @@ mod accumulate;
 mod pascals_triangle;
 mod util;
 mod simple_linked_list;
+mod fizzy;
 
 ///
 ///
