@@ -3,24 +3,12 @@ pub fn hamming_distance(s1: &str, s2: &str) -> Option<usize> {
         return None;
     }
 
-    let mut s1 = s1.chars();
-    let mut s2 = s2.chars();
-    let mut distance = 0usize;
-
-    loop {
-        let c = s1.next();
-        let b = s2.next();
-
-        if c.is_none() {
-            break;
+    Some(s1.chars().zip(s2.chars()).fold(0,|mut acc,pair|{
+        if pair.0 != pair.1 { 
+            acc += 1
         }
-
-        if c.unwrap() != b.unwrap() {
-            distance += 1;
-        }
-    }
-
-    Some(distance)
+        acc
+    }))
 }
 
 mod test {
