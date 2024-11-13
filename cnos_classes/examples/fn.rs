@@ -13,6 +13,10 @@ struct Person {
     age: u32,
 }
 
+struct Array<T, const N: usize> {
+    data : [T; N]
+}
+
 fn main() {
     apply(|| println!("just once"));
     println!("{}", apply_on_3(|x: u32| x * 32));
@@ -23,22 +27,19 @@ fn main() {
         p.age
     });
     println!("{}", p.age);
-}
 
-///
-/// # mod foo {
-/// pub trait Fn<Args> : FnMut<Args> {
-///     extern "rust-call" fn call(&self, args: Args) -> Self::Output;
-/// }
-///
-/// pub trait FnMut<Args> : FnOnce<Args> {
-///     extern "rust-call" fn call_mut(&mut self, args: Args) -> Self::Output;
-/// }
-///
-/// pub trait FnOnce<Args> {
-///     type Output;
-///
-///     extern "rust-call" fn call_once(self, args: Args) -> Self::Output;
-/// }
-/// # }
-///
+
+    let arrays:Vec<Array<_,3>> = vec![
+        Array::<i32, 3>{
+            data: [1, 2, 3],
+        },
+        Array::<i32, 3>{
+            data: [1, 2, 3],
+        },
+        Array::<i32, 3>{
+            data: [1, 2, 3],
+        },
+    ];
+
+    println!("Success!");
+}
