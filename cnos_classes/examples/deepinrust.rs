@@ -83,7 +83,7 @@ fn main() {
         block("表达式与语句");
         let a: u8 = 0b_1110_111;
         println!("{:08b}", !a);
-        println!("{:08b}", a & 0);
+        // println!("{:08b}", a & 0);
 
         let x = println!("good");
         let y = {
@@ -210,8 +210,8 @@ fn main() {
         unsafe {
             std::ptr::write(&mut bptr, aptr);
 
-            let a: u32 = MaybeUninit::uninit().assume_init();
-            println!("uninitialized value :{}", std::ptr::read(&a));
+            // let a: u32 = MaybeUninit::uninit().assume_init();
+            // println!("uninitialized value :{}", std::ptr::read(&a));
         }
 
         println!("{}", bptr);
