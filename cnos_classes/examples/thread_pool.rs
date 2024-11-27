@@ -27,7 +27,9 @@ fn main() {
         });
     }
 
-    let sum = rx.iter().take(len).sum::<i32>();
+    drop(tx);
+
+    let sum = rx.iter().sum::<i32>();
 
     println!("{:?}", sum);
 }
