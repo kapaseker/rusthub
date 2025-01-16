@@ -1,9 +1,9 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::error::Error;
 use std::fmt::{Display, Formatter};
 use std::fs::File;
-use std::io;
 use std::io::{BufRead, BufReader, ErrorKind, Read};
+use std::{fs, io};
 
 fn main() {
     let input = vec![
@@ -47,6 +47,15 @@ fn main() {
             }
         }
     }
+
+    let mut text = String::from("Rust is awesome\nLearning Rust\nFun with Rustaceans");
+    let mut finder = MutableTextFinder::new(&mut text);
+
+    let first = finder.find_first("Rust");
+    println!("{:?}", first); // Should print: Some("Rust is awesome")
+
+    finder.replace_lines("Rust", "Programming in Rust");
+    println!("{}", finder.get_text()); // Should print the modified text
 }
 
 pub fn update_slice(slice: &mut [i32], indices: &[usize], value: i32) {
@@ -252,22 +261,22 @@ pub enum OrderStatus {
     Cancelled(String),
 }
 
-pub enum Message {
-    Text(String),
-    Number(i32),
-    Quit,
-    None,
-}
-
-pub fn process_text_message(message: &Message) -> String {
-    // Your code here...
-
-    if let Message::Text(content) = message {
-        format!("Processed Text: {content}")
-    } else {
-        String::from("Unhandled Message")
-    }
-}
+// pub enum Message {
+//     Text(String),
+//     Number(i32),
+//     Quit,
+//     None,
+// }
+//
+// pub fn process_text_message(message: &Message) -> String {
+//     // Your code here...
+//
+//     if let Message::Text(content) = message {
+//         format!("Processed Text: {content}")
+//     } else {
+//         String::from("Unhandled Message")
+//     }
+// }
 
 pub fn add_elements(vec: &mut Vec<i32>, elements: &[i32]) {
     // Your code here
@@ -712,7 +721,7 @@ impl PluginManager {
     }
 }
 
-pub fn longest<'a>(a:&'a str, b:&'a str) -> &'a str {
+pub fn longest<'a>(a: &'a str, b: &'a str) -> &'a str {
     if a.chars().count() < b.chars().count() {
         b
     } else {
@@ -730,11 +739,482 @@ impl<'a> TextFinder<'a> {
 
     pub fn find_first(&self, text: &str) -> Option<&'a str> {
         let lines = self.0.split('\n').collect::<Vec<&str>>();
-        lines.iter().find(|line| line.contains(text)).map(|line| *line)
+        lines
+            .iter()
+            .find(|line| line.contains(text))
+            .map(|line| *line)
     }
 
     pub fn find_many(&self, text: &str) -> Vec<&'a str> {
         let lines = self.0.split('\n').collect::<Vec<&str>>();
-        lines.iter().filter(|line| line.contains(text)).map(|line| *line).collect()
+        lines
+            .iter()
+            .filter(|line| line.contains(text))
+            .map(|line| *line)
+            .collect()
+    }
+}
+
+// 1. Finish the struct definition
+pub struct MutableTextFinder<'a>(&'a mut String);
+
+impl<'a> MutableTextFinder<'a> {
+    pub fn new(text: &'a mut String) -> Self {
+        Self(text)
+    }
+
+    pub fn get_text(&self) -> &String {
+        self.0
+    }
+
+    pub fn find_first(&self, text: &str) -> Option<&str> {
+        let lines = self.0.split('\n').collect::<Vec<&str>>();
+        lines
+            .iter()
+            .find(|line| line.contains(text))
+            .map(move |line| *line)
+    }
+
+    pub fn replace_lines(&mut self, text: &str, replacement: &str) {
+        // Split the original string into lines
+        for x in self.0.lines() {}
+        let lines: Vec<&str> = self.0.lines().collect();
+
+        // Iterate over the lines and replace lines containing the keyword
+        let replaced_lines: Vec<String> = lines
+            .iter()
+            .map(|line| {
+                if line.contains(text) {
+                    replacement.to_string()
+                } else {
+                    line.to_string()
+                }
+            })
+            .collect();
+
+        self.0.clear();
+        self.0.push_str(&replaced_lines.join("\n"));
+
+        // Join the lines back together
+        // let mut a = replaced_lines.join("\n");
+        // self.0 = &a;
+    }
+
+    pub fn replace_all_occurrence(&mut self, text: &str, replacement: &str) {
+        let index_diff = (replacement.len() - text.len()) as i32;
+        let all_match = self
+            .0
+            .match_indices(text)
+            .map(|(x, _)| x)
+            .collect::<Vec<usize>>();
+        let mut diff = 0i32;
+        for x in all_match {
+            self.0.replace_range(
+                ((x as i32 + diff) as usize)..((x as i32 + diff) as usize + text.len()),
+                replacement,
+            );
+            diff += index_diff;
+        }
+    }
+}
+
+mod test {
+    use crate::MutableTextFinder;
+
+    #[test]
+    fn test_mutable_text_finder() {
+        let mut text = String::from("Rust is awesome\nLearning Rust\nFun with Rustaceans");
+        let mut finder = MutableTextFinder::new(&mut text);
+
+        let first = finder.find_first("Rust");
+        println!("{:?}", first); // Should print: Some("Rust is awesome")
+
+        finder.replace_lines("Rust", "Programming in Rust");
+        println!("{}", finder.get_text()); // Should print the modified text
+    }
+
+    #[test]
+    fn test_get_text_after_modification() {
+        let mut text = String::from("Rust is awesome\nReplace this line\nFinal line");
+        let mut finder = MutableTextFinder::new(&mut text);
+
+        finder.replace_lines("Replace", "This line has been replaced");
+        assert_eq!(
+            finder.get_text(),
+            "Rust is awesome\nThis line has been replaced\nFinal line"
+        );
+    }
+}
+
+pub fn create_closures() -> (
+    impl Fn(i32, i32) -> i32,
+    impl Fn(i32, i32) -> i32,
+    impl Fn(i32, i32) -> i32,
+) {
+    let add_closure = |a, b| {
+        // Step 1: Implement here
+        a + b
+    };
+
+    // Step 2:
+    // Create the `subtract_closure` closure that subtracts two `i32` values.
+
+    let subtract_closure = |a, b| {
+        // Step 1: Implement here
+        a - b
+    };
+    // Step 3:
+    // Create the `multiply_closure` closure that multiplies two `i32` values.
+
+    let multiply_closure = |a, b| {
+        // Step 1: Implement here
+        a * b
+    };
+
+    (add_closure, subtract_closure, multiply_closure)
+}
+
+// 1. Based on the `main` function below,
+// Find out the types of the closures and define them
+pub fn create_typed_closures() -> (
+    impl Fn(f32, f32) -> f32,
+    impl FnMut(&mut f32, f32),
+    impl FnOnce(String) -> String,
+) {
+    // 2. Implement calculate_total closure here
+    let calculate_total = |price: f32, tax_rate: f32| price + price * tax_rate;
+
+    // 3. Implement apply_discount closure here
+    let apply_discount = |price: &mut f32, tax_rate: f32| {
+        *price -= tax_rate;
+    };
+
+    // 4. Implement checkout_cart closure here
+    let checkout_cart = |content: String| format!("Checkout complete: {}", content);
+
+    (calculate_total, apply_discount, checkout_cart)
+}
+
+mod test_closure {
+    use crate::create_typed_closures;
+
+    #[test]
+    fn test() {
+        let (calculate_total, mut apply_discount, checkout_cart) = create_typed_closures();
+
+        // Example tests
+        assert_eq!(calculate_total(100.0, 0.2), 120.0);
+
+        let mut total_price = 120.0;
+        apply_discount(&mut total_price, 20.0);
+        assert_eq!(total_price, 100.0);
+
+        let cart_details = String::from("Items: Apple, Banana, Orange");
+        assert_eq!(
+            checkout_cart(cart_details),
+            "Checkout complete: Items: Apple, Banana, Orange"
+        );
+    }
+}
+
+pub fn filter_even_numbers(iter: impl Iterator<Item = i32>) -> Vec<i32> {
+    iter.filter(|&n| n % 2 != 0).collect()
+}
+
+// 2. Finish the function here
+pub fn uppercase_strings<'a>(iter: impl Iterator<Item = &'a str>) -> Vec<String> {
+    iter.map(|x| x.to_uppercase()).collect()
+}
+
+pub fn unique_items<I, K>(iterator: I) -> Vec<String>
+where
+    K: AsRef<str>,
+    I: Iterator<Item = K>,
+{
+    let mut seen = HashSet::new();
+    let mut result: Vec<String> = iterator
+        .filter_map(|item| {
+            let trimmed = item.as_ref().trim().to_string();
+            if !trimmed.is_empty() && seen.insert(trimmed.clone()) {
+                Some(trimmed)
+            } else {
+                None
+            }
+        })
+        .collect();
+
+    result.sort();
+    result
+}
+
+mod test_unique_items {
+    use crate::unique_items;
+
+    #[test]
+    pub fn test() {
+        let product_ids = vec![
+            "abc123".to_string(),
+            "  ".to_string(),
+            "def456".to_string(),
+            "abc123".to_string(),
+            "ghi789".to_string(),
+            "ghi789".to_string(),
+            "   def456".to_string(),
+        ];
+
+        let unique_ids = unique_items(product_ids.into_iter());
+        assert_eq!(unique_ids, vec!["abc123", "def456", "ghi789"]);
+    }
+}
+
+pub struct Animal {
+    pub name: String,
+    pub age: u8,
+}
+
+pub fn create_animal(name: &str, age: u8) -> Box<Animal> {
+    Box::new(Animal {
+        name: name.to_string(),
+        age,
+    })
+}
+
+pub fn access_animal(animal: Box<Animal>) -> (String, u8) {
+    // Your code here
+    (animal.name, animal.age)
+}
+
+use std::path::PathBuf;
+
+pub struct TempFile {
+    pub path: PathBuf,
+}
+
+impl TempFile {
+    // 1. Define the `new` associated function
+    pub fn new(path: impl AsRef<str>) -> Result<TempFile, io::Error> {
+        File::create(path.as_ref())?;
+
+        Ok(TempFile {
+            path: PathBuf::from(path.as_ref()),
+        })
+    }
+}
+
+impl Drop for TempFile {
+    fn drop(&mut self) {
+        if let Err(e) = fs::remove_file(&self.path) {
+            eprintln!("Failed to delete temporary file: {}", e);
+        }
+    }
+}
+
+use std::rc::Rc;
+
+pub fn use_shared_data<T: Display>(data: Rc<Vec<T>>) {
+    // 1. Loop over each item in the vector and print it using `println!`
+    data.iter().for_each(|x| {
+        println!("{}", x);
+    })
+}
+
+pub fn share_data_to_other_functions<F>(mut take_item: F, items: Vec<String>)
+where
+    F: FnMut(Rc<Vec<String>>),
+{
+    let items = Rc::new(items);
+    // 2. Implement the function
+    // Share the data as a reference-counted pointer 3 times with the closure
+    take_item(items.clone());
+    take_item(items.clone());
+    take_item(items.clone());
+}
+
+use std::cell::RefCell;
+use std::ops::{Add, DerefMut};
+
+pub fn push<T>(data: Rc<RefCell<Vec<T>>>, element: T) {
+    // 1. Finish the function
+    data.borrow_mut().push(element);
+}
+
+pub fn iterate_and_print_shared_data<T: Display>(data: Rc<RefCell<Vec<T>>>) {
+    // 2. Borrow the data and print each item
+    data.borrow().iter().for_each(|element| {
+        println!("{}", element);
+    })
+}
+
+pub fn plus_one(data: Rc<RefCell<i32>>) {
+    // 3. Finish the function
+    let mut cell = data.borrow_mut();
+    *cell += 1;
+}
+
+use std::thread;
+
+pub fn concurrent_add<T: Add<Output = T> + Send + Copy + 'static>(
+    items: Vec<T>,
+    num: T,
+) -> Vec<thread::JoinHandle<T>> {
+    // Implement the function here
+    items
+        .into_iter()
+        .map(|item| thread::spawn(move || item.add(num)))
+        .collect::<Vec<thread::JoinHandle<T>>>()
+}
+
+mod test_concurrent_add {
+    use crate::concurrent_add;
+
+    #[test]
+    pub fn test() {
+        {
+            let mut list = vec![1, 2, 3, 4, 5];
+
+            let handles = concurrent_add(list.clone(), 3);
+
+            for handle in handles {
+                let result = handle.join().unwrap();
+                let original = list.remove(0);
+
+                assert_eq!(result, original + 3);
+            }
+        }
+
+        {
+            let mut list = vec![10., 20., 30., 40., 50.];
+
+            let handles = concurrent_add(list.clone(), 5.);
+
+            for handle in handles {
+                let result = handle.join().unwrap();
+                let original = list.remove(0);
+
+                assert_eq!(result, original + 5.);
+            }
+        }
+    }
+}
+
+use std::sync::mpsc::{channel, Receiver, Sender};
+use std::thread::JoinHandle;
+
+#[derive(Clone)]
+pub enum Priority {
+    Low,
+    Medium,
+    High,
+    Critical,
+}
+
+pub struct Message {
+    pub content: String,
+    pub sender_id: u32,
+    pub priority: Priority,
+}
+
+pub fn create_message_channel() -> (Sender<Message>, Receiver<Message>) {
+    channel()
+}
+
+pub fn create_producer_thread(messages: Vec<Message>, tx: Sender<Message>) -> JoinHandle<()> {
+    // TODO: Create a thread that:
+    // - Updates the priority based on content
+    // - Sends the updated message through the channel
+    thread::spawn(move || {
+        messages.iter().for_each(|m| {
+            let mut msg = Message {
+                priority: Priority::Low,
+                content: m.content.clone(),
+                sender_id: m.sender_id,
+            };
+            if m.content.starts_with("ERROR") {
+                msg.priority = Priority::Critical;
+            } else if m.content.starts_with("WARNING") {
+                msg.priority = Priority::High;
+            } else if m.content.starts_with("DEBUG") {
+                msg.priority = Priority::Medium;
+            }
+            tx.send(msg).unwrap();
+        });
+    })
+}
+
+pub fn create_consumer_thread(rx: Receiver<Message>) -> JoinHandle<Vec<String>> {
+    // TODO: Create a thread that:
+    // - Receives messages from the channel
+    // - Formats them as "[PRIORITY|SENDER_ID] CONTENT"
+    // - Returns a vector of formatted messages
+    thread::spawn(move || {
+        let mut vec: Vec<String> = vec![];
+        rx.iter().for_each(|m| {
+            vec.push(format!("[{}|{}] {}", match m.priority {
+                Priority::Low => "LOW",
+                Priority::Medium => "MED",
+                Priority::High => "HIGH",
+                Priority::Critical => "CRIT",
+            }, m.sender_id, m.content));
+        });
+        vec
+    })
+}
+
+use std::sync::{Arc, Mutex};
+
+pub fn create_shared_data<T>(initial: T) -> Arc<Mutex<T>> {
+    // 1. Initialize and return a new Arc<Mutex<T>> with the initial value
+    Arc::new(Mutex::new(initial))
+}
+
+pub fn increment_counter(
+    counter: Arc<Mutex<i32>>,
+    threads: usize,
+    increments: usize,
+) -> Vec<JoinHandle<()>> {
+    // 2. Increment the counter by the given increments using the given number of threads
+    (0..threads).map(|thread_id| {
+        thread::spawn({
+            let mut counter = counter.clone();
+            move || {
+                let mut counter = counter.lock().unwrap();
+                *counter = *counter + increments as i32;
+            }
+        })
+    }).collect::<Vec<JoinHandle<()>>>()
+}
+
+pub fn modify_shared_data<T: Send + 'static>(
+    data: Arc<Mutex<T>>,
+    modifier: fn(&mut T),
+) -> JoinHandle<()> {
+    // 3. Use a new thread to modify the shared data
+
+    thread::spawn({
+        let mut a = data.clone();
+        move || {
+            modifier(a.lock().unwrap().deref_mut());
+        }
+    })
+
+}
+
+mod test_modify_shared_data {
+    use std::sync::Arc;
+    use crate::{create_shared_data, increment_counter, modify_shared_data};
+
+    #[test]
+    pub fn test() {
+        let counter = create_shared_data(0);
+        let handles = increment_counter(Arc::clone(&counter), 5, 10);
+        for handle in handles {
+            handle.join().unwrap();
+        }
+        println!("Counter value: {}", *counter.lock().unwrap());
+
+        let shared_string = create_shared_data(String::from("Hello"));
+        let handle = modify_shared_data(shared_string.clone(), |s| s.push_str(" World"));
+        handle.join().unwrap();
+        println!("Modified string: {}", *shared_string.lock().unwrap());
     }
 }
