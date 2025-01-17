@@ -1444,7 +1444,6 @@ pub fn convert_temperature(value: f64, from_unit: &str, to_unit: &str) -> Result
     }
 }
 
-
 pub fn validate_user(age: i32, email: &str) -> Result<(), String> {
     // Implement here
     // Check if age is valid
@@ -1462,7 +1461,6 @@ pub fn validate_user(age: i32, email: &str) -> Result<(), String> {
 }
 
 pub fn median(numbers: &mut Vec<i32>) -> f32 {
-
     if numbers.is_empty() {
         return 0.0;
     }
@@ -1494,7 +1492,8 @@ pub fn mode(numbers: &Vec<i32>) -> Vec<i32> {
     let max_count = occurrences.values().cloned().max().unwrap_or(0);
 
     // Collect all numbers with the highest frequency, preserving the original order
-    order.into_iter()
+    order
+        .into_iter()
         .filter(|&num| occurrences[&num] == max_count)
         .collect()
 }
@@ -1512,7 +1511,7 @@ pub fn find_first_palindrome(start: i32, end: i32) -> Option<i32> {
             }
         }
     } else {
-        for num in (end..=start) {
+        for num in end..=start {
             if is_palindrome(num) {
                 return Some(num);
             }
@@ -1584,7 +1583,11 @@ fn neighbors(pos: (usize, usize), max_x: usize, max_y: usize) -> Vec<(usize, usi
     neighbors
 }
 
-fn solve_maze(maze: Vec<Vec<char>>, start: (usize, usize), end: (usize, usize)) -> Vec<(usize, usize)> {
+fn solve_maze(
+    maze: Vec<Vec<char>>,
+    start: (usize, usize),
+    end: (usize, usize),
+) -> Vec<(usize, usize)> {
     let mut queue = VecDeque::new();
     let mut visited = vec![vec![false; maze[0].len()]; maze.len()];
     let mut parent = vec![vec![None; maze[0].len()]; maze.len()];
@@ -1614,4 +1617,141 @@ fn solve_maze(maze: Vec<Vec<char>>, start: (usize, usize), end: (usize, usize)) 
     }
 
     vec![]
+}
+
+macro_rules! x_vec {
+    () => {
+        Vec::new()
+    };
+    (ept) => {
+        Vec::new()
+    };
+    {$x:expr} => {
+        {
+            let mut v = Vec::new();
+            v.push($x);
+            v
+        }
+    };
+    {$x:ident, $v:expr} => {
+        // let $x = {
+            let mut $x = Vec::new();
+            $x.push($v);
+        // };
+    };
+    ($x:ident, $($v:expr),+) => {
+        let mut $x = Vec::new();
+        $(
+            $x.push($v);
+        )+
+    };
+    [$($x:expr),*] => {
+        {
+            let mut v = Vec::new();
+            $(
+                v.push($x);
+            )*
+            v
+        }
+    }
+}
+
+mod test_macro {
+    #[test]
+    pub fn test() {
+        let a: Vec<i32> = x_vec!();
+        println!("{:?}", a.len());
+        let b: Vec<i32> = x_vec!(ept);
+        println!("{:?}", b.len());
+        let c = x_vec!(10i32);
+        println!("{:?}", c.len());
+
+        x_vec!(abc, 123);
+        println!("{:?}", abc.len());
+
+        x_vec!(abc, 1, 2, 3, 4, 5);
+        println!("{:?}", abc.len());
+
+        let abc = vec![1, 2, 3, 4, 5];
+        println!("{:?}", abc.len());
+    }
+}
+
+#[macro_export]
+macro_rules! math_operations {
+    ($a:expr, $b:literal, $c:expr) => {{
+        let d = match $b {
+            "+" => $a + $c,
+            "-" => $a - $c,
+            "*" => $a * $c,
+            "/" => {
+                if $c == 0 {
+                    panic!("Division by zero");
+                }
+                $a / $c
+            }
+            _ => {
+                panic!("Unsupported operator: {}", $b);
+            }
+        };
+        format!("{} {} {} = {}", $a, $b, $c, d)
+    }};
+}
+
+mod test_math_operations {
+    #[test]
+    pub fn test() {
+        assert_eq!(math_operations!(4, "+", 2), "4 + 2 = 6");
+        assert_eq!(math_operations!(10, "-", 3), "10 - 3 = 7");
+        assert_eq!(math_operations!(6, "*", 4), "6 * 4 = 24");
+        assert_eq!(math_operations!(15, "/", 3), "15 / 3 = 5");
+    }
+}
+
+pub trait ConfigDefault {
+    fn get_default() -> Self;
+}
+
+// These types need default values
+pub struct ConnectionTimeout(pub u64);
+pub struct MaxConnections(pub u32);
+pub struct RetryAttempts(pub u8);
+pub struct PostgresPort(pub u16);
+pub struct MySQLPort(pub u16);
+pub struct MongoPort(pub u16);
+pub struct RedisPort(pub u16);
+
+#[macro_export]
+macro_rules! config_default_impl {
+    ($x:ident, $v:expr) => {
+        impl ConfigDefault for $x {
+            fn get_default() -> Self {
+                Self($v)
+            }
+        }
+    };
+}
+
+config_default_impl!(ConnectionTimeout, 30);
+config_default_impl!(MaxConnections, 100);
+config_default_impl!(RetryAttempts, 3);
+config_default_impl!(PostgresPort, 5432);
+config_default_impl!(MySQLPort, 3306);
+config_default_impl!(MongoPort, 27017);
+config_default_impl!(RedisPort, 6379);
+
+mod test_config_default_impl {
+    use crate::ConfigDefault;
+
+    #[test]
+    pub fn test() {
+        // let's say we have a new struct
+        struct CustomPort(pub u16);
+
+        // we implement the ConfigDefault trait for CustomPort
+        config_default_impl!(CustomPort, 8080);
+
+        // when running the `get_default` method, it should return the default value
+        assert_eq!(<CustomPort as ConfigDefault>::get_default().0, 8080);
+    }
 }
