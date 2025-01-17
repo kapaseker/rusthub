@@ -140,7 +140,6 @@ impl Counter {
 type Collection = HashMap<String, Vec<String>>;
 
 pub fn add_animal_to_section(animal: &str, section: &str, registry: &mut Collection) {
-    // TODO: implement this function
     let mut vec = registry.entry(section.to_string()).or_insert(Vec::new());
     if !vec.contains(&animal.to_string()) {
         vec.push(animal.to_string());
@@ -148,7 +147,6 @@ pub fn add_animal_to_section(animal: &str, section: &str, registry: &mut Collect
 }
 
 pub fn get_animals_in_section(section: &str, registry: &Collection) -> Vec<String> {
-    // TODO: implement this function
     if let Some(animals) = registry.get(section) {
         let mut vec = animals.clone();
         vec.sort();
@@ -159,7 +157,6 @@ pub fn get_animals_in_section(section: &str, registry: &Collection) -> Vec<Strin
 }
 
 pub fn get_all_animals_sorted(registry: &Collection) -> Vec<String> {
-    // TODO: implement this function
     let mut animals = Vec::new();
     for x in registry.values().into_iter() {
         animals.extend(x.clone());
@@ -378,7 +375,6 @@ impl Display for ParsePercentageError {
 impl Error for ParsePercentageError {}
 
 pub fn parse_percentage(input: &str) -> Result<u8, ParsePercentageError> {
-    // TODO: Implement the function here
     let percentage = input
         .parse::<u8>()
         .map_err(|e| ParsePercentageError::InvalidInput)?;
@@ -390,7 +386,6 @@ pub fn parse_percentage(input: &str) -> Result<u8, ParsePercentageError> {
 }
 
 pub fn sum_integers_from_file(file_path: &str) -> Result<i32, io::Error> {
-    // TODO: Implement this function
     // Hint: Use `File::open`, `BufReader::new`, and `.lines()` to process the file.
     // Use `?` to propagate errors and `io::Error::new` for custom errors.
     let f = File::open(file_path)?;
@@ -411,7 +406,6 @@ pub fn sum_integers_from_file(file_path: &str) -> Result<i32, io::Error> {
 }
 
 pub fn find_and_multiply(numbers: Vec<i32>, index1: usize, index2: usize) -> Option<i32> {
-    // TODO: Instead of using `unwrap`, use the `?` operator to propagate the option
     // HINT: `numbers.get` returns a Option<i32> value
 
     let num1 = numbers.get(index1)?;
@@ -420,7 +414,6 @@ pub fn find_and_multiply(numbers: Vec<i32>, index1: usize, index2: usize) -> Opt
 }
 
 pub fn read_file(file_path: &str) -> Option<String> {
-    // TODO: Implement this function
     // Hint: Use `File::open` and `.read_to_string()` with `?` to propagate errors.
     let mut f = File::open(file_path).ok()?;
     let mut content = String::new();
@@ -487,7 +480,6 @@ pub struct ItemContainer<T> {
 }
 
 impl<T> ItemContainer<T> {
-    // TODO: Implement the `get_item` method to return a reference to the item.
     pub fn get_item(&self) -> &T {
         &self.item
     }
@@ -1119,7 +1111,6 @@ pub fn create_message_channel() -> (Sender<Message>, Receiver<Message>) {
 }
 
 pub fn create_producer_thread(messages: Vec<Message>, tx: Sender<Message>) -> JoinHandle<()> {
-    // TODO: Create a thread that:
     // - Updates the priority based on content
     // - Sends the updated message through the channel
     thread::spawn(move || {
@@ -1142,19 +1133,23 @@ pub fn create_producer_thread(messages: Vec<Message>, tx: Sender<Message>) -> Jo
 }
 
 pub fn create_consumer_thread(rx: Receiver<Message>) -> JoinHandle<Vec<String>> {
-    // TODO: Create a thread that:
     // - Receives messages from the channel
     // - Formats them as "[PRIORITY|SENDER_ID] CONTENT"
     // - Returns a vector of formatted messages
     thread::spawn(move || {
         let mut vec: Vec<String> = vec![];
         rx.iter().for_each(|m| {
-            vec.push(format!("[{}|{}] {}", match m.priority {
-                Priority::Low => "LOW",
-                Priority::Medium => "MED",
-                Priority::High => "HIGH",
-                Priority::Critical => "CRIT",
-            }, m.sender_id, m.content));
+            vec.push(format!(
+                "[{}|{}] {}",
+                match m.priority {
+                    Priority::Low => "LOW",
+                    Priority::Medium => "MED",
+                    Priority::High => "HIGH",
+                    Priority::Critical => "CRIT",
+                },
+                m.sender_id,
+                m.content
+            ));
         });
         vec
     })
@@ -1173,15 +1168,17 @@ pub fn increment_counter(
     increments: usize,
 ) -> Vec<JoinHandle<()>> {
     // 2. Increment the counter by the given increments using the given number of threads
-    (0..threads).map(|thread_id| {
-        thread::spawn({
-            let mut counter = counter.clone();
-            move || {
-                let mut counter = counter.lock().unwrap();
-                *counter = *counter + increments as i32;
-            }
+    (0..threads)
+        .map(|thread_id| {
+            thread::spawn({
+                let mut counter = counter.clone();
+                move || {
+                    let mut counter = counter.lock().unwrap();
+                    *counter = *counter + increments as i32;
+                }
+            })
         })
-    }).collect::<Vec<JoinHandle<()>>>()
+        .collect::<Vec<JoinHandle<()>>>()
 }
 
 pub fn modify_shared_data<T: Send + 'static>(
@@ -1196,12 +1193,11 @@ pub fn modify_shared_data<T: Send + 'static>(
             modifier(a.lock().unwrap().deref_mut());
         }
     })
-
 }
 
 mod test_modify_shared_data {
-    use std::sync::Arc;
     use crate::{create_shared_data, increment_counter, modify_shared_data};
+    use std::sync::Arc;
 
     #[test]
     pub fn test() {
@@ -1217,4 +1213,405 @@ mod test_modify_shared_data {
         handle.join().unwrap();
         println!("Modified string: {}", *shared_string.lock().unwrap());
     }
+}
+
+#[derive(Debug, Clone)]
+pub enum BookItem {
+    Book { pages: i32, discount: Option<i32> },
+    EBook(String, (i32, i32)),
+    Collection(Vec<BookItem>),
+    OutOfPrint,
+}
+
+impl BookItem {
+    pub fn check_validity(&self) -> bool {
+        match self {
+            BookItem::Book { pages, discount } => {
+                let page_valid = *pages > 0i32;
+                if page_valid {
+                    if let Some(discount) = discount {
+                        *discount >= 0 && *discount <= 50
+                    } else {
+                        true
+                    }
+                } else {
+                    false
+                }
+            }
+            BookItem::EBook(title, (a, b)) => !title.is_empty() && *b > 0i32,
+            BookItem::Collection(items) => {
+                !items.is_empty() && items.iter().all(|i| i.check_validity())
+            }
+            BookItem::OutOfPrint => false,
+        }
+    }
+}
+
+mod test_book_item {
+    use crate::BookItem;
+
+    #[test]
+    pub fn test() {
+        let book_a = BookItem::Book {
+            pages: 42,
+            discount: Some(100),
+        };
+        let ebook_b = BookItem::EBook("hello".to_string(), (1, 2));
+        let collection_c = BookItem::Collection(vec![book_a.clone(), BookItem::OutOfPrint]);
+
+        assert!(
+            !book_a.check_validity(),
+            "Book with discount > 50 should be invalid"
+        );
+        assert!(
+            ebook_b.check_validity(),
+            "EBook with valid title and tuple should be valid"
+        );
+        assert!(
+            !collection_c.check_validity(),
+            "Collection containing invalid items should be invalid"
+        );
+        assert!(
+            !BookItem::OutOfPrint.check_validity(),
+            "OutOfPrint should always be invalid"
+        );
+    }
+}
+
+pub struct Millimeters(pub u32);
+pub struct Meters(pub u32);
+
+impl Add<Meters> for Millimeters {
+    type Output = Self;
+
+    fn add(self, rhs: Meters) -> Self::Output {
+        Self(rhs.0 * 1000 + self.0)
+    }
+}
+
+#[derive(Debug)]
+pub struct AppConfig {
+    pub theme: String,
+    pub notifications_enabled: bool,
+    pub max_users: u32,
+    pub auto_save: bool,
+    pub cache_size_mb: u32,
+    pub log_level: String,
+    pub retry_attempts: u32,
+    pub timeout_seconds: u32,
+}
+
+impl Default for AppConfig {
+    fn default() -> Self {
+        Self {
+            theme: "Light".to_string(),
+            notifications_enabled: true,
+            max_users: 100u32,
+            auto_save: true,
+            cache_size_mb: 512,
+            log_level: "INFO".to_string(),
+            retry_attempts: 3,
+            timeout_seconds: 30,
+        }
+    }
+}
+
+pub fn is_even(n: i32) -> bool {
+    if n % 2 == 0 {
+        true
+    } else {
+        false
+    }
+}
+
+pub fn sum_of_evens(start: i32, end: i32) -> i32 {
+    // Your code here...
+    let mut sum = 0;
+    for x in start..=end {
+        if x % 2 == 0 {
+            sum += x;
+        }
+    }
+    sum
+}
+
+pub fn countdown(n: u32) -> Vec<u32> {
+    let mut vec: Vec<u32> = vec![];
+    let mut n = n;
+    while n > 0u32 {
+        vec.push(n);
+        n -= 1;
+    }
+    vec.push(0u32);
+    vec
+}
+
+pub fn weekday_from_number(day: u8) -> &'static str {
+    // TODO: Implement the function here
+    match day {
+        1 => "Monday",
+        2 => "Tuesday",
+        3 => "Wednesday",
+        4 => "Thursday",
+        5 => "Friday",
+        6 => "Saturday",
+        7 => "Sunday",
+        _ => "Invalid day number",
+    }
+}
+
+pub fn fizz_buzz(num: u32) -> String {
+    if num % 15 == 0 {
+        "FizzBuzz".to_string()
+    } else if num % 5 == 0 {
+        "Buzz".to_string()
+    } else if num % 3 == 0 {
+        "Fizz".to_string()
+    } else {
+        num.to_string()
+    }
+}
+
+pub fn fibonacci(n: u32) -> u32 {
+    if n <= 1 {
+        n
+    } else {
+        fibonacci(n - 1) + fibonacci(n - 2)
+    }
+}
+
+pub fn is_prime(n: u32) -> bool {
+    // Implement your code here
+    if n <= 1 {
+        return false;
+    }
+    if n == 2 {
+        return true;
+    }
+    if n % 2 == 0 {
+        return false;
+    }
+
+    let sqrt_n = (n as f64).sqrt() as u32;
+    for i in (3..=sqrt_n).step_by(2) {
+        if n % i == 0 {
+            return false;
+        }
+    }
+
+    true
+}
+
+pub fn describe_number(n: i32) -> String {
+    // TODO: Implement the function here
+    if n == 0 {
+        "Zero".to_string()
+    } else if n > 0 {
+        if n % 2 == 0 {
+            "Positive even".to_string()
+        } else {
+            "Positive odd".to_string()
+        }
+    } else {
+        if n % 2 == 0 {
+            "Negative even".to_string()
+        } else {
+            "Negative odd".to_string()
+        }
+    }
+}
+
+fn factorial(n: u32) -> u128 {
+    (1..=n).fold(1u128, |acc, x| acc * x as u128)
+}
+
+pub fn convert_temperature(value: f64, from_unit: &str, to_unit: &str) -> Result<f64, String> {
+    match (from_unit, to_unit) {
+        ("C", "F") => Ok(value * 9.0 / 5.0 + 32.0),
+        ("F", "C") => Ok((value - 32.0) * 5.0 / 9.0),
+        ("C", "K") => Ok(value + 273.15),
+        ("K", "C") => Ok(value - 273.15),
+        ("F", "K") => {
+            let celsius = (value - 32.0) * 5.0 / 9.0;
+            Ok(celsius + 273.15)
+        }
+        ("K", "F") => {
+            let celsius = value - 273.15;
+            Ok(celsius * 9.0 / 5.0 + 32.0)
+        }
+        ("C", "C") | ("F", "F") | ("K", "K") => Ok(value), // Handle same unit conversion
+        _ => Err(String::from("Invalid unit")),
+    }
+}
+
+
+pub fn validate_user(age: i32, email: &str) -> Result<(), String> {
+    // Implement here
+    // Check if age is valid
+    if age < 0 || age > 120 {
+        return Err(String::from("Invalid age"));
+    }
+
+    // Check if email contains '@' symbol
+    if !email.contains('@') {
+        return Err(String::from("Invalid email"));
+    }
+
+    // If both checks pass, return Ok(())
+    Ok(())
+}
+
+pub fn median(numbers: &mut Vec<i32>) -> f32 {
+
+    if numbers.is_empty() {
+        return 0.0;
+    }
+
+    numbers.sort();
+    let mid = numbers.len() / 2;
+    if numbers.len() % 2 == 0 {
+        (numbers[mid] as f32 + numbers[mid - 1] as f32) / 2.0
+    } else {
+        numbers[mid] as f32
+    }
+}
+
+pub fn mode(numbers: &Vec<i32>) -> Vec<i32> {
+    // TODO: Implement logic here to return the mode of the list
+    let mut occurrences = HashMap::new();
+    let mut order = Vec::new();
+
+    // Count the occurrences of each number and keep track of their order
+    for &num in numbers {
+        let counter = occurrences.entry(num).or_insert(0);
+        *counter += 1;
+        if *counter == 1 {
+            order.push(num);
+        }
+    }
+
+    // Determine the highest frequency
+    let max_count = occurrences.values().cloned().max().unwrap_or(0);
+
+    // Collect all numbers with the highest frequency, preserving the original order
+    order.into_iter()
+        .filter(|&num| occurrences[&num] == max_count)
+        .collect()
+}
+
+fn is_palindrome(n: i32) -> bool {
+    let s = n.to_string();
+    s == s.chars().rev().collect::<String>()
+}
+
+pub fn find_first_palindrome(start: i32, end: i32) -> Option<i32> {
+    if start <= end {
+        for num in start..=end {
+            if is_palindrome(num) {
+                return Some(num);
+            }
+        }
+    } else {
+        for num in (end..=start) {
+            if is_palindrome(num) {
+                return Some(num);
+            }
+        }
+    }
+    None
+}
+
+#[derive(Debug)]
+enum State {
+    Start,
+    SeenA,
+    SeenB,
+    SeenC,
+    Invalid,
+}
+
+fn transition(state: State, input: char) -> State {
+    match state {
+        State::Start => match input {
+            'a' => State::SeenA,
+            _ => State::Invalid,
+        },
+        State::SeenA => match input {
+            'b' => State::SeenB,
+            'c' => State::SeenC,
+            _ => State::Invalid,
+        },
+        State::SeenB => match input {
+            'b' => State::SeenB,
+            'c' => State::SeenC,
+            _ => State::Invalid,
+        },
+        State::SeenC => State::Invalid,
+        State::Invalid => State::Invalid,
+    }
+}
+
+fn recognize_pattern(input: &str) -> bool {
+    let mut state = State::Start;
+
+    for c in input.chars() {
+        state = transition(state, c);
+        if let State::Invalid = state {
+            return false;
+        }
+    }
+
+    matches!(state, State::SeenC)
+}
+
+use std::collections::VecDeque;
+
+fn neighbors(pos: (usize, usize), max_x: usize, max_y: usize) -> Vec<(usize, usize)> {
+    let (x, y) = pos;
+    let mut neighbors = Vec::new();
+    if x > 0 {
+        neighbors.push((x - 1, y));
+    }
+    if y > 0 {
+        neighbors.push((x, y - 1));
+    }
+    if x < max_x - 1 {
+        neighbors.push((x + 1, y));
+    }
+    if y < max_y - 1 {
+        neighbors.push((x, y + 1));
+    }
+    neighbors
+}
+
+fn solve_maze(maze: Vec<Vec<char>>, start: (usize, usize), end: (usize, usize)) -> Vec<(usize, usize)> {
+    let mut queue = VecDeque::new();
+    let mut visited = vec![vec![false; maze[0].len()]; maze.len()];
+    let mut parent = vec![vec![None; maze[0].len()]; maze.len()];
+
+    queue.push_back(start);
+    visited[start.0][start.1] = true;
+
+    while let Some(current) = queue.pop_front() {
+        if current == end {
+            let mut path = Vec::new();
+            let mut step = Some(current);
+            while let Some(pos) = step {
+                path.push(pos);
+                step = parent[pos.0][pos.1];
+            }
+            path.reverse();
+            return path;
+        }
+
+        for neighbor in neighbors(current, maze.len(), maze[0].len()) {
+            if !visited[neighbor.0][neighbor.1] && maze[neighbor.0][neighbor.1] != '#' {
+                queue.push_back(neighbor);
+                visited[neighbor.0][neighbor.1] = true;
+                parent[neighbor.0][neighbor.1] = Some(current);
+            }
+        }
+    }
+
+    vec![]
 }
