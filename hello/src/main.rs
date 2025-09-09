@@ -99,6 +99,7 @@ mod simple_linked_list;
 mod fizzy;
 mod rotational_cipher;
 mod yachat;
+mod wordy;
 
 ///
 ///
