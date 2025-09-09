@@ -1,14 +1,3 @@
-use std::i32;
-use crate::break_camel_case::solution;
-use crate::convert_string_to_camel_case::to_camel_case;
-use crate::fibonacci_streaming::all_fibonacci_numbers;
-use crate::gigasecond::after;
-use crate::longest_substring_without_repeating_characters::length_of_longest_substring;
-use crate::misc::{create_phone_number, find_next_square};
-use crate::move_zeroes::move_zeroes;
-use crate::reverse_string::reverse;
-use crate::prime::{count_primes, is_prime, prime_vector};
-
 mod block;
 mod gigasecond;
 mod reverse_string;
@@ -98,6 +87,7 @@ mod util;
 mod simple_linked_list;
 mod fizzy;
 mod rotational_cipher;
+mod run_len;
 mod yachat;
 mod wordy;
 
