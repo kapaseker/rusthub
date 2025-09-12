@@ -91,6 +91,7 @@ mod run_len;
 mod yachat;
 mod wordy;
 mod get_pins;
+mod prime_reduction;
 
 ///
 ///
