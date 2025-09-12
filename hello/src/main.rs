@@ -90,6 +90,7 @@ mod rotational_cipher;
 mod run_len;
 mod yachat;
 mod wordy;
+mod get_pins;
 
 ///
 ///
