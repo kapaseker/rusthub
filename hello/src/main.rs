@@ -94,6 +94,7 @@ mod get_pins;
 mod prime_reduction;
 mod rot13;
 mod merge_in_2048;
+mod closest_pair;
 
 ///
 ///
