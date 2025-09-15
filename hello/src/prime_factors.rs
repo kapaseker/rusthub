@@ -6,7 +6,7 @@ mod test {
         let factors = factors(1);
 
 
-        let expected = [];
+        let expected: [u64; 0] = [];
 
 
         assert_eq!(factors, expected);

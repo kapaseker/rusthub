@@ -25,7 +25,7 @@ mod test {
         let input = vec![];
 
 
-        let expected = vec![];
+        let expected:Vec<i32> = vec![];
 
 
         assert_eq!(map(input, square), expected);

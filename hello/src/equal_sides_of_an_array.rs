@@ -1,5 +1,5 @@
 fn find_even_index(arr: &[i32]) -> Option<usize> {
-    let sum = arr.iter().sum();
+    let sum: i32 = arr.iter().sum();
     let mut l_sum = 0;
     let mut r_sum = sum;
     for i in 0..arr.len() {

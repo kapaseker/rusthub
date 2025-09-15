@@ -90,7 +90,7 @@ mod tests {
     #[test]
     fn sample_test3() {
         let square: &[Vec<i32>; 1] = &[Vec::new()];
-        let expected = Vec::new();
+        let expected: Vec<i32> = Vec::new();
         assert_eq!(snail(square), expected, "Failed with empty input");
     }
 

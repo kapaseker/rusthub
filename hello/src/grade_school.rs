@@ -162,9 +162,9 @@ mod test {
 
     fn grades_for_empty_school() {
         let s = School::new();
+        let a: Vec<u32> = vec![];
 
-
-        assert_eq!(s.grades(), vec![])
+        assert_eq!(s.grades(), a)
     }
 
 
