@@ -98,6 +98,7 @@ mod closest_pair;
 mod advent_2025_12;
 mod fib_n;
 mod consec_kprimes;
+mod count_patterns;
 
 ///
 ///
