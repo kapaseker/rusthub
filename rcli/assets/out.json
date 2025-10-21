@@ -1,0 +1,142 @@
+[
+  {
+    "Name": "Marc-André ter Stegen",
+    "Position": "Goalkeeper",
+    "Jersey Number": 1,
+    "Nationality": "Germany",
+    "Age": 32
+  },
+  {
+    "Name": "Iñaki Peña",
+    "Position": "Goalkeeper",
+    "Jersey Number": 13,
+    "Nationality": "Spain",
+    "Age": 25
+  },
+  {
+    "Name": "Ronald Araújo",
+    "Position": "Defender",
+    "Jersey Number": 4,
+    "Nationality": "Uruguay",
+    "Age": 25
+  },
+  {
+    "Name": "Jules Koundé",
+    "Position": "Defender",
+    "Jersey Number": 23,
+    "Nationality": "France",
+    "Age": 25
+  },
+  {
+    "Name": "Alejandro Balde",
+    "Position": "Defender",
+    "Jersey Number": 3,
+    "Nationality": "Spain",
+    "Age": 20
+  },
+  {
+    "Name": "João Félix",
+    "Position": "Midfielder",
+    "Jersey Number": 14,
+    "Nationality": "Portugal",
+    "Age": 24
+  },
+  {
+    "Name": "Pedri",
+    "Position": "Midfielder",
+    "Jersey Number": 8,
+    "Nationality": "Spain",
+    "Age": 21
+  },
+  {
+    "Name": "Gavi",
+    "Position": "Midfielder",
+    "Jersey Number": 6,
+    "Nationality": "Spain",
+    "Age": 19
+  },
+  {
+    "Name": "Frenkie de Jong",
+    "Position": "Midfielder",
+    "Jersey Number": 21,
+    "Nationality": "Netherlands",
+    "Age": 26
+  },
+  {
+    "Name": "Ilkay Gündogan",
+    "Position": "Midfielder",
+    "Jersey Number": 22,
+    "Nationality": "Germany",
+    "Age": 33
+  },
+  {
+    "Name": "Robert Lewandowski",
+    "Position": "Forward",
+    "Jersey Number": 9,
+    "Nationality": "Poland",
+    "Age": 36
+  },
+  {
+    "Name": "Raphinha",
+    "Position": "Forward",
+    "Jersey Number": 11,
+    "Nationality": "Brazil",
+    "Age": 27
+  },
+  {
+    "Name": "Ferran Torres",
+    "Position": "Forward",
+    "Jersey Number": 7,
+    "Nationality": "Spain",
+    "Age": 24
+  },
+  {
+    "Name": "Lamine Yamal",
+    "Position": "Forward",
+    "Jersey Number": 27,
+    "Nationality": "Spain",
+    "Age": 16
+  },
+  {
+    "Name": "Ansu Fati",
+    "Position": "Forward",
+    "Jersey Number": 10,
+    "Nationality": "Spain",
+    "Age": 21
+  },
+  {
+    "Name": "Andreas Christensen",
+    "Position": "Defender",
+    "Jersey Number": 15,
+    "Nationality": "Denmark",
+    "Age": 28
+  },
+  {
+    "Name": "Marcos Alonso",
+    "Position": "Defender",
+    "Jersey Number": 17,
+    "Nationality": "Spain",
+    "Age": 33
+  },
+  {
+    "Name": "Eric García",
+    "Position": "Defender",
+    "Jersey Number": 24,
+    "Nationality": "Spain",
+    "Age": 23
+  },
+  {
+    "Name": "Pau Cubarsí",
+    "Position": "Defender",
+    "Jersey Number": 33,
+    "Nationality": "Spain",
+    "Age": 17
+  },
+  {
+    "Name": "Oriol Romeu",
+    "Position": "Midfielder",
+    "Jersey Number": 18,
+    "Nationality": "Spain",
+    "Age": 32
+  }
+]
