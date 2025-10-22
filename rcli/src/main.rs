@@ -1,8 +1,6 @@
 use clap::Parser;
-use csv::Reader;
 use rcli::opts::{Opt, SubCommand};
-use rcli::process::{process_csv, Player};
-use serde::Deserialize;
+use rcli::process::process_csv;
 
 fn main() -> anyhow::Result<()> {
     let opts = Opt::parse();
