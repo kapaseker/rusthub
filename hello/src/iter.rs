@@ -1,7 +1,24 @@
+use std::ops::Div;
+
+#[derive(Debug)]
 struct Book {
     title: String,
     author: String,
     year: i32,
+}
+
+impl Book {
+    fn century(&self) -> i32 {
+        (self.year - 1).div(100) + 1
+    }
+}
+
+struct BookId(usize);
+
+fn books_with_ids<'a>(
+    books_iter: impl Iterator<Item = &'a Book>,
+) -> impl Iterator<Item = (BookId, &'a Book)> {
+    books_iter.enumerate().map(|(ix, b)| (BookId(ix + 1), b)) // book's id is ix + 1
 }
 
 // 模拟获取书籍集合的函数
@@ -45,12 +62,97 @@ fn collection() -> Vec<Book> {
     ]
 }
 
+struct PipelineBuilder<'a, T> {
+    iter: Box<dyn Iterator<Item = T> + 'a>,
+}
+
+impl<'a, T: 'a> PipelineBuilder<'a, T> {
+    fn new(iter: impl Iterator<Item = T> + 'a) -> Self {
+        Self {
+            iter: Box::new(iter),
+        }
+    }
+}
+
+impl<'a, T: 'a> PipelineBuilder<'a, T> {
+    fn with_filter(self, cond: impl FnMut(&T) -> bool + 'a) -> Self {
+        Self {
+            iter: Box::new(self.iter.filter(cond)),
+        }
+    }
+    fn with_map<S>(self, f: impl FnMut(T) -> S + 'a) -> PipelineBuilder<'a, S> {
+        PipelineBuilder {
+            iter: Box::new(self.iter.map(f)),
+        }
+    }
+}
+
+impl<'a, T: 'a> PipelineBuilder<'a, T> {
+    fn for_each(self, f: impl FnMut(T) -> () + 'a) {
+        self.iter.for_each(f)
+    }
+}
+
 #[cfg(test)]
 mod test {
-    use crate::iter::{collection, Book};
+    use crate::iter::{books_with_ids, collection, Book, BookId, PipelineBuilder};
+    use rand::random;
+    use std::collections::BTreeSet;
     use std::iter::{Filter, Map};
-    use std::ops::Div;
+    use std::ops::{Div, Rem};
     use std::slice::Iter;
+
+    #[test]
+    fn test_even() {
+        let numbers: Vec<i32> = vec![1, 2, 3, 4, 5];
+        let it: Iter<i32> = numbers.iter();
+
+        let mut pipline = PipelineBuilder::new(it);
+
+        let needs_filtering: bool = random();
+        if needs_filtering {
+            pipline = pipline.with_filter(|x: &&i32| x.rem(2) == 0);
+        }
+
+        pipline.for_each(|x| print!("{} ", x));
+    }
+
+    #[test]
+    fn test_century() {
+        let books = collection();
+        books
+            .iter()
+            .map(Book::century)
+            .collect::<BTreeSet<_>>()
+            .into_iter() // centuries in the ascending order:
+            .for_each(|century| {
+                println!("Books from the {} century:", century);
+                books
+                    .iter()
+                    .enumerate()
+                    .filter_map(|(ix, b)| {
+                        if b.century() == century {
+                            Some((ix + 1, b)) // book's id is ix + 1
+                        } else {
+                            None
+                        }
+                    })
+                    .for_each(|(id, book)| println!("#{id}: {book:?}"));
+            });
+    }
+
+    #[test]
+    fn test_opt_century() {
+        let books = collection();
+        let centuries: BTreeSet<_> = books.iter().map(Book::century).collect();
+
+        for century in centuries {
+            println!("Books from the {} century:", century);
+            books_with_ids(books.iter())
+                .filter(|(_, b)| b.century() == century)
+                .for_each(|(BookId(id), book)| println!("#{id}: {book:?}"));
+        }
+    }
 
     #[test]
     fn test_iter() {
@@ -103,5 +205,38 @@ mod test {
         let iter = data.iter(); // 实现了 ExactSizeIterator
 
         println!("总共有 {} 个元素", iter.len()); // 输出：4
+    }
+
+    #[test]
+    fn test_iter_vec() {
+        let mut vec = vec![1, 2, 3, 4, 5];
+
+        // 通过不可变引用遍历 vector，不会获取所有权，vec 在循环后仍可使用
+        for i in &vec {
+            print!("{} ", i);
+        }
+
+        for i in vec.iter() {
+            print!("{} ", i);
+        }
+
+        println!();
+
+        // 通过可变引用遍历 vector，不获取所有权但可以修改元素，vec 在循环后仍可使用
+        for i in &mut vec {
+            *i += 1;
+            print!("{} ", i);
+        }
+
+        for i in vec.iter_mut() {
+            print!("{} ", i);
+        }
+
+        println!();
+
+        // 通过获取所有权的方式遍历 vector，vec 在循环后不再可用
+        for i in vec {
+            print!("{} ", i);
+        }
     }
 }

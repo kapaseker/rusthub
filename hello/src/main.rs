@@ -1,3 +1,5 @@
+extern crate core;
+
 mod block;
 mod gigasecond;
 mod reverse_string;
