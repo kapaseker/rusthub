@@ -3,8 +3,9 @@ use rcli::opts::{Opt, OutputFormat, SubCommand};
 use rcli::process::process_csv;
 
 fn main() -> anyhow::Result<()> {
-    println!("{}", OutputFormat::Json);
+
     let opts = Opt::parse();
+
     println!("command is :{:?}", opts);
 
     match opts.cmd {
