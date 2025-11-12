@@ -103,6 +103,7 @@ mod consec_kprimes;
 mod count_patterns;
 mod learn_iter;
 mod iter;
+mod iter_test;
 
 ///
 ///
