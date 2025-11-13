@@ -191,7 +191,7 @@ mod test {
     #[test]
     fn test_rev() {
         let vec = vec![1, 2, 3, 4, 5];
-        let mut iter = vec.iter(); // iter() 返回一个 DoubleEndedIterator
+        let mut iter = vec.iter().rev(); // iter() 返回一个 DoubleEndedIterator
 
         // 从前往后取一个
         println!("{:?}", iter.next());
