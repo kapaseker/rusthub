@@ -1,0 +1,16 @@
+[package]
+name = "makus"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+darling = "0.21.3"
+proc-macro2 = "1.0.103"
+quote = "1.0.42"
+syn = { version = "2.0.110", features = ["extra-traits"] }
+
+[dev-dependencies]
+anyhow = "1.0.100"
