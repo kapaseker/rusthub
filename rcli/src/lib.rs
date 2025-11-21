@@ -1,2 +1,2 @@
-pub mod opts;
+pub mod cmd;
 pub mod process;

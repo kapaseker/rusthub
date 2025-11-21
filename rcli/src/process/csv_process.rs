@@ -1,9 +1,9 @@
-use crate::opts::OutputFormat;
 use csv::Reader;
 use serde_json::Value as SerdeValue;
 use std::collections::BTreeMap;
 use toml::map::Map;
 use toml::Value as TomlValue;
+use crate::cmd::csv_opt::OutputFormat;
 
 pub fn process_csv(
     input_file: &str,
